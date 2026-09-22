@@ -67,3 +67,6 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+# Ignore Visual Studio / C++ IntelliSense cache directories
+ipch/
+.vs/
