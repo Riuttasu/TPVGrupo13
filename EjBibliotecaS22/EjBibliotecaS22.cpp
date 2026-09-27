@@ -1,4 +1,5 @@
-
+// Grupo 13
+// Leo Reyes y Lune Redondo
 #include <fstream>
 #include <iostream>
 #include <windows.h>

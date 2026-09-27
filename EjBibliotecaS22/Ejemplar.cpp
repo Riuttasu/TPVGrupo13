@@ -1,5 +1,5 @@
 #include "Ejemplar.h"
-Ejemplar::Ejemplar() : codigo(0), tipo(DESCONOCIDO), nombre("."), disponible(true)
+Ejemplar::Ejemplar() : codigo(0), tipo(Libro), nombre("."), disponible(true)
 {
 }
 Ejemplar::Ejemplar(int Codigo, TIPO Tipo, string Nombre) : codigo(Codigo), tipo(Tipo), nombre(Nombre), disponible(true)
@@ -28,16 +28,18 @@ void Ejemplar::Devuelve()
 }
 std::istream& operator>>(std::istream& file, Ejemplar& ejem)
 {
-	// Lee el numero del codigo 
-	file >> ejem.codigo;
+	// Lee el numero del codigo, si no se puede por mal formato tira exception
+	if (!(file >> ejem.codigo)) throw std::exception("Mal formato de codigo");
 	// Lee el caracter del tipo
 	char c = '.';
-	file >> c;
+	// Si mal formato tira exception
+	if (!(file >> c)) throw std::exception("Mal formato en tipo");
+	// Establece tipo dependiendo del caracter
 	if (c == 'L') ejem.tipo = Ejemplar::TIPO::Libro;
 	else if (c == 'A') ejem.tipo = Ejemplar::TIPO::Audiovisual;
 	else if (c == 'J') ejem.tipo = Ejemplar::TIPO::Juego;
-	// Por si no se reconoce
-	else ejem.tipo = Ejemplar::TIPO::DESCONOCIDO;
+	// Si no es ninguno tira exception
+	else throw std::exception("Tipo de ejemplar no reconocido");
 	// Lee el nombre hasta el final de linea
 	getline(file, ejem.nombre);
 	return file;

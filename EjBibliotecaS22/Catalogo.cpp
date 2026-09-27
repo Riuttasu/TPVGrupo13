@@ -9,7 +9,21 @@ Catalogo::Catalogo(istream& file)
 	// Rellena el array
 	for (int i = 0; i < numElems;i++)
 	{
-		file >> elems[i];
+		try
+		{
+			// Creacion uno por uno de los ejemplares, si hay error de formato tiran exception
+			file >> elems[i];
+		}
+		catch(const std::exception& e)
+		{
+			// Si ha habido errores en la lectura de los ejemplares se aborta la creacion
+			// Borra de memoria dinamica para evitar memory leaks
+			delete[] elems;
+			elems = nullptr;
+			numElems = 0;
+			// Vuelve a tirar la excepcion
+			throw;
+		}
 	}
 }
 /// <summary>
@@ -17,8 +31,9 @@ Catalogo::Catalogo(istream& file)
 /// </summary>
 Catalogo::~Catalogo()
 {
-	numElems = 0;
 	delete[] elems;
+	elems = nullptr;
+	numElems = 0;
 }
 /// <summary>
 /// Funcion para buscar un ejemplar mediante su codigo identificador dentro del catalogo

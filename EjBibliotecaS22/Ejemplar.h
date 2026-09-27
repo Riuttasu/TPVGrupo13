@@ -9,7 +9,7 @@ class Ejemplar
 public:
 	enum TIPO
 	{
-		Libro, Audiovisual, Juego, DESCONOCIDO
+		Libro, Audiovisual, Juego
 	};
 	Ejemplar(); // Constructora sin argumentos
 	Ejemplar(int Codigo, TIPO Tipo, string Nombre); // Constructora con argumentos
