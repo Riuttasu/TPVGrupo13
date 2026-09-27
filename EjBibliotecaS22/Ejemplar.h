@@ -7,6 +7,7 @@ using namespace std;
 class Ejemplar
 {
 public:
+	// Diferentes tipos de ejemplar que existen
 	enum TIPO
 	{
 		Libro, Audiovisual, Juego
@@ -21,7 +22,8 @@ public:
 	void Presta();
 	void Devuelve();
 	// operadores
-	friend std::istream& operator>>(std::istream& file, Ejemplar& ejem);
+	friend std::istream& operator>>(std::istream&, Ejemplar&);
+	friend std::ostream& operator<<(std::ostream&, const Ejemplar&);
 private:
 	int codigo;
 	TIPO tipo;

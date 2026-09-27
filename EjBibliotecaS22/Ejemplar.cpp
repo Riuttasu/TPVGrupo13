@@ -44,3 +44,18 @@ std::istream& operator>>(std::istream& file, Ejemplar& ejem)
 	getline(file, ejem.nombre);
 	return file;
 }
+std::ostream& operator<<(std::ostream& file, const Ejemplar& ejem)
+{
+	// Codigo
+	file << ejem.codigo << "  ";
+	// Tipo
+	switch (ejem.tipo)
+	{
+	case Ejemplar::TIPO::Libro: file << "Libro        "; break;
+	case Ejemplar::TIPO::Juego: file << "Juego        ";break;
+	case Ejemplar::TIPO::Audiovisual: file << "Audiovisual  "; break;
+	}
+	// Nombre
+	file << ejem.nombre;
+	return file;
+}

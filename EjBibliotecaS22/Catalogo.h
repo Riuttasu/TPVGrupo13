@@ -12,6 +12,8 @@ public:
 	~Catalogo();
 	// Buscadora de ejemplares
 	Ejemplar* BuscaEjemplar(int Codigo) const;
+	// Mostrar
+	void Mostrar(ostream& file);
 private:
 	Ejemplar* elems;
 	size_t numElems;

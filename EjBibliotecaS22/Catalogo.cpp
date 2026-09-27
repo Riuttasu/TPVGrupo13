@@ -55,3 +55,11 @@ Ejemplar* Catalogo::BuscaEjemplar(int Codigo) const
 bool Catalogo::comparaCodigo(const Ejemplar& ejemplar, const int codigo) {
 	return ejemplar.GetCodigo() < codigo;
 }
+void Catalogo::Mostrar(ostream& file)
+{
+	file << "  ID | Tipo | Nombre" << endl;
+	for (int i = 0;i < numElems;i++)
+	{
+		file << elems[i] << std::endl;
+	}
+}
