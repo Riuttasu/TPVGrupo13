@@ -45,9 +45,9 @@ Ejemplar* Catalogo::BuscaEjemplar(int Codigo) const
 	// Uso de busqueda binaria
 	Ejemplar* ejem = lower_bound(elems, elems+numElems, Codigo, comparaCodigo);
 	// La busqueda binaria devuelve last si no se ha encontrado, comprobamos que no es el caso
-	// Si se ha devuelto el ultimo elemento pero este no tiene el mismo codigo, no esta, devolver nullptr
-	if (ejem == elems + numElems && ejem->GetCodigo() != Codigo) return nullptr;
-	else return ejem;
+	if (ejem != elems + numElems && elems->GetCodigo() == Codigo) return ejem;
+	// Si es el caso, devuelve nullptr
+	else return nullptr;
 }
 /// <summary>
 /// Funcion para comparar codigo de ejemplar en la busqueda binaria
