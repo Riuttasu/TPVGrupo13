@@ -15,7 +15,7 @@ public:
 private:
 	Ejemplar* elems;
 	size_t numElems;
-	bool comparaCodigo(const Ejemplar& ejemplar, const int codigo);
+	static bool comparaCodigo(const Ejemplar& ejemplar, const int codigo);
 };
 #endif // !CATALOGO_H
 
