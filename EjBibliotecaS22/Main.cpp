@@ -48,9 +48,10 @@ int main()
         }
         }
     }
-    catch(exception& e)
+    catch(const std::exception& e)
     {
-        throw;
+        cout << e.what() << endl;
+        return 1;
     }
     return 0;
 }
