@@ -20,6 +20,8 @@ public:
 	// Disponibilidad
 	void Presta();
 	void Devuelve();
+	// operadores
+	friend std::istream& operator>>(std::istream& file, Ejemplar& ejem);
 private:
 	int codigo;
 	TIPO tipo;

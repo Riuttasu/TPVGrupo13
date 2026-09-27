@@ -26,3 +26,19 @@ void Ejemplar::Devuelve()
 {
 	disponible = true;
 }
+std::istream& operator>>(std::istream& file, Ejemplar& ejem)
+{
+	// Lee el numero del codigo 
+	file >> ejem.codigo;
+	// Lee el caracter del tipo
+	char c = '.';
+	file >> c;
+	if (c == 'L') ejem.tipo = Ejemplar::TIPO::Libro;
+	else if (c == 'A') ejem.tipo = Ejemplar::TIPO::Audiovisual;
+	else if (c == 'J') ejem.tipo = Ejemplar::TIPO::Juego;
+	// Por si no se reconoce
+	else ejem.tipo = Ejemplar::TIPO::DESCONOCIDO;
+	// Lee el nombre hasta el final de linea
+	getline(file, ejem.nombre);
+	return file;
+}

@@ -1,19 +1,42 @@
 #include "Catalogo.h"
+#include <algorithm>
 Catalogo::Catalogo(istream& file)
 {
-	using namespace Ejemplar;
-	// Siguiendo la estructura que se da en el ejemplo
-	// Se lee el codigo
-	int codigo = 0;
-	file >> codigo;
-	// Se lee el caracter del tipo y se le asigna el tipo correspondiente
-	char c = '.'; file >> c;
-	Ejemplar::TIPO tipo;
-	if (c == 'L') tipo = Ejemplar::TIPO::Libro;
-	else if (c == 'A') tipo = Audiovisual;
-	else if (c == 'J') tipo = Juego;
-	// Si el caracter no es válido o no se reconoce de los tres posibles
-	else tipo = DESCONOCIDO;
-	// Nombre del ejemplar es todo hasta el final de linea
-	getline(file, nombre);
+	// Lee el número de ejemplares
+	file >> numElems;
+	// Crea el array dinamico
+	elems = new Ejemplar[numElems];
+	// Rellena el array
+	for (int i = 0; i < numElems;i++)
+	{
+		file >> elems[i];
+	}
+}
+/// <summary>
+/// Destructora
+/// </summary>
+Catalogo::~Catalogo()
+{
+	numElems = 0;
+	delete[] elems;
+}
+/// <summary>
+/// Funcion para buscar un ejemplar mediante su codigo identificador dentro del catalogo
+/// </summary>
+/// <param name="Codigo">Codigo del ejemplar a buscar</param>
+/// <returns>Puntero al ejemplar, si no existe dentro del catalogo nullptr</returns>
+Ejemplar* Catalogo::BuscaEjemplar(int Codigo) const
+{
+	// Uso de busqueda binaria
+	Ejemplar* ejem = lower_bound(elems, elems+numElems, Codigo, comparaCodigo);
+	// La busqueda binaria devuelve last si no se ha encontrado, comprobamos que no es el caso
+	// Si se ha devuelto el ultimo elemento pero este no tiene el mismo codigo, no esta, devolver nullptr
+	if (ejem == elems + numElems && ejem->GetCodigo() != Codigo) return nullptr;
+	else return ejem;
+}
+/// <summary>
+/// Funcion para comparar codigo de ejemplar en la busqueda binaria
+/// </summary>
+bool Catalogo::comparaCodigo(const Ejemplar& ejemplar, const int codigo) {
+	return ejemplar.GetCodigo() < codigo;
 }

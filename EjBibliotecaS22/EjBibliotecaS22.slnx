@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="EjBibliotecaS22.vcxproj" />
+  <Project Path="EjBibliotecaS22.vcxproj" Id="6d56c771-28f3-4931-a296-c6dbd42fe973" />
 </Solution>
