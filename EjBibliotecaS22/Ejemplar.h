@@ -1,3 +1,5 @@
+// Grupo 13
+// Leo Reyes y Lune Redondo
 #pragma once
 #ifndef EJEMPLAR_H
 #define EJEMPLAR_H

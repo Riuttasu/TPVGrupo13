@@ -19,6 +19,7 @@ int main()
         // prestamos
         ifstream prestamosfile("prestamos.txt");
         ListaPrestamos listaprestamos(catalogo,prestamosfile);
+        listaprestamos.Ordenar(); // ordenacion de la lista
         // Opcion que tome el usuario
         int opt = 0;
         // Bucle
@@ -26,12 +27,15 @@ int main()
         while (hayprograma)
         {
         // Texto inicial
-        cout << "Elige una opción:\n" << "1. Mostrar el catálogo.\n" << "2. Mostrar préstamos.\n" << "3. Registrar ejemplar.\n" << "4. Prestar un ejemplar.\n" << "5. Devolver un ejemplar.\n" << "6. Salir\n";
+        cout << "Elige una opción:\n" << "1. Mostrar el catálogo.\n" << "2. Mostrar préstamos.\n" << "3. Salir\n";
         if (!(cin >> opt))
         {
             // Si se ha introducido un caracter no numerico
             cout << "Pon un numerico anda\n";
+            // Quita el estado fail
             cin.clear();
+            // Ignora la entrada anterior hasta 1000 caracteres, si ha puesto mas el usuario es muy tonto
+            cin.ignore(1000, '\n');
         }
         else
         {
@@ -39,10 +43,7 @@ int main()
             {
             case 1: catalogo.Mostrar(cout); break;
             case 2: listaprestamos.Mostrar(cout); break;
-            case 3: break;
-            case 4: break;
-            case 5: break;
-            case 6: hayprograma = false; break;
+            case 3: hayprograma = false; break;
             default: cout << "Comando no reconocido" << endl; break;
             }
         }
@@ -53,5 +54,6 @@ int main()
         cout << e.what() << endl;
         return 1;
     }
+    cout << "Gracias por usar la biblioteca (como en c++ uff referencia), vuelva pronto" << endl;
     return 0;
 }

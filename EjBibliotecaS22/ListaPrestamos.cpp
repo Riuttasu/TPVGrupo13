@@ -1,4 +1,5 @@
-
+// Grupo 13
+// Leo Reyes y Lune Redondo
 #include "ListaPrestamos.h"
 #include <algorithm>
 
@@ -9,9 +10,16 @@ ListaPrestamos::ListaPrestamos(const Catalogo& catalogo, std::istream& file){
 	// crea el array dinamico
 	elems = new Prestamo[numElems];
 	// rellena el array
-	for (size_t i = 0; i < numElems; i++){
+	for (size_t i = 0; i < numElems; i++) {
 		// rellena cada prestamo con la funcion leerPrestamo
-		elems[i].leerPrestamo(catalogo, file);
+		try
+		{
+			elems[i].leerPrestamo(catalogo, file);
+		}
+		catch (const std::exception e)
+		{
+			throw;
+		}
 	}
 }
 

@@ -1,3 +1,5 @@
+// Grupo 13
+// Leo Reyes y Lune Redondo
 #include "Prestamo.h"
 
 
@@ -54,15 +56,16 @@ Date Prestamo::GetDevolucion() const
 // leer archivo de prestamos
 void Prestamo::leerPrestamo(const Catalogo& catalogo, std::istream& file)
 {
-	// lee el codigo de usuario
-	file >> codigoUsuario;
-	// lee la fecha de prestamo
-	file >> fechaPrestamo;
 	// lee el codigo del ejemplar
 	int codigoEjemplar;
 	file >> codigoEjemplar;
 	// busca el ejemplar en el catalogo
 	ejemplar = catalogo.BuscaEjemplar(codigoEjemplar);
+	if (ejemplar == nullptr) throw std::exception("Prestamo con codigo de ejemplar no encontrado en el catalogo");
+	// lee la fecha de prestamo
+	file >> fechaPrestamo;
+	// lee el codigo de usuario
+	file >> codigoUsuario;
 }
 
 // operador de salida
@@ -70,16 +73,16 @@ std::ostream& operator <<(std::ostream& out, const Prestamo& prestamo)
 {
 	// parámetro auxiliares para la salida
 	Date diaActual = Date(); // date cpp tiene metodo para obtener la fecha actual
-	int diasPrestamo = prestamo.fechaPrestamo.diff(diaActual); // dias que han pasado desde el prestamo
+	int diasPrestamo = prestamo.GetDevolucion().diff(diaActual); // dias que han pasado desde el prestamo
 
-	if (diasPrestamo > 0)
+	if (diasPrestamo >= 0)
 	{
-		out << prestamo.fechaPrestamo << " (en " << diasPrestamo << "días) " << prestamo.ejemplar->GetNombre() << std::endl;
+		out << prestamo.fechaPrestamo << " (en " << diasPrestamo << " días) " << prestamo.ejemplar->GetNombre();
 	}
 	else
 	{
-		int penalizacion = diasPrestamo * 2; // dias que han pasado desde el prestamo
-		out << prestamo.fechaPrestamo << " (en " << diasPrestamo << "días) " << prestamo.ejemplar->GetNombre() << " (" << penalizacion << " días de penalización";
+		int penalizacion = diasPrestamo * -2; // dias que han pasado desde el prestamo
+		out << prestamo.fechaPrestamo << " (en " << diasPrestamo << " días) " << prestamo.ejemplar->GetNombre() << " (" << penalizacion << " días de penalización) ";
 	}
 	return out;
 }

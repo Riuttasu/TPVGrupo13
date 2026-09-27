@@ -1,3 +1,5 @@
+// Grupo 13
+// Leo Reyes y Lune Redondo
 #pragma once
 #ifndef LISTAPRESTAMOS_H
 #define LISTAPRESTAMOS_H

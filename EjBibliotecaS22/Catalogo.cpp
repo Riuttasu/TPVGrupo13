@@ -1,3 +1,5 @@
+// Grupo 13
+// Leo Reyes y Lune Redondo
 #include "Catalogo.h"
 #include <algorithm>
 Catalogo::Catalogo(istream& file)

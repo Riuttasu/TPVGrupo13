@@ -1,3 +1,5 @@
+// Grupo 13
+// Leo Reyes y Lune Redondo
 #include "Ejemplar.h"
 Ejemplar::Ejemplar() : codigo(0), tipo(Libro), nombre("."), disponible(true)
 {
