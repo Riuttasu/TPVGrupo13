@@ -80,7 +80,7 @@ Rectangle::getIntersection(const Rectangle& other) const
 void
 Rectangle::move(Vector2D<> v)
 {
-	corner = corner + v;
+	corner += v;
 }
 
 Rectangle

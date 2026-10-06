@@ -23,6 +23,9 @@ public:
 	Vector2D operator+(const Vector2D& otro) const {
 		return {x + otro.x, y + otro.y};
 	}
+	Vector2D& operator+=(const Vector2D& otro) const {
+		return { x + otro.x, y + otro.y };
+	}
 	Vector2D operator-(const Vector2D& otro) const
 	{
 		return { x - otro.x, y - otro.y };
