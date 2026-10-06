@@ -85,6 +85,7 @@ void
 Game::run()
 {
 	while (!exit) {
+		handleEvents();
 		// TODO: implementar bucle del juego
 	}
 }
