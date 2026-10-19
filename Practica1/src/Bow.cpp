@@ -1,19 +1,28 @@
 #include "Bow.h"
-Bow::Bow(const Rectangle& dims, const Texture* text, float velocity, int numarrow, bool arm)
-	: body(dims), texture(text), vel(velocity), numArrows(numarrow), strung(arm)
+Bow::Bow(Rectangle dims, const Game* g) :
+	body(dims), game(g)
 {}
 Bow::~Bow()
 {
 }
-void handleEvent(const SDL_Event& event)
+void Bow::handleEvent(const SDL_Event& event)
 {
-
+	switch (event.key.key)
+	{
+		case SDLK_DOWN: dirY = 1; break;
+		case SDLK_UP: dirY = -1; break;
+		default: dirY = 0; break;
+	}
 }
-void update()
+void Bow::update(float delta)
 {
-
+	body.move(Vector2D(0.0f, dirY * delta * vel));
 }
 void Bow::render()
 {
-	texture->render(body.to_sdl());
+	Texture* texture = game->getTexture(Game::TextureName::BOW);
+	if (texture)
+	{
+		texture->render();
+	}
 }

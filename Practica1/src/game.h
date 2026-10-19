@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GAME_H
 #define GAME_H
 
@@ -7,11 +8,13 @@
 #include <vector>
 // Objetos
 #include "Bow.h"
+#include "Arrow.h"
 // #include "rectangle.h"
 
 // Declaraciones anticipadas
 class Texture;
-
+class Bow;
+class Arrow;
 /**
  * Clase principal del juego.
  */
@@ -47,6 +50,7 @@ private:
 
 	// Elementos del juego
 	Bow* bow; // Arco
+	std::vector<Arrow*> arrows; // Flechas
 public:
 	Game();
 	~Game();

@@ -1,11 +1,10 @@
 #include "Arrow.h"
-Arrow::Arrow(Game* game, Rectangle dims, Vector2D<float> velocity, Texture* text) :
-	collisions(game), body(dims), vel(velocity), texture(text)
+Arrow::Arrow(Game* game, Rectangle dims, Vector2D<float> velocity) :
+	collisions(game), body(dims), vel(velocity)
 {
 };
 Arrow::~Arrow() 
 {
-	delete texture;
 }
 void Arrow::update()
 {
@@ -13,5 +12,4 @@ void Arrow::update()
 }
 void Arrow::render()
 {
-	texture->render(body.to_sdl());
 }

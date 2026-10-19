@@ -34,15 +34,15 @@ constexpr array<TextureSpec, Game::NUM_TEXTURES> textureList{
 
 
 Game::Game()
-  : exit(false)
+	: exit(false)
 {
 	// Carga SDL y crea la ventana con su renderizador
 	if (!SDL_Init(SDL_INIT_VIDEO))
 		throw "SDL_Init: "s + SDL_GetError();
 
 	if (!SDL_CreateWindowAndRenderer(WINDOW_TITLE,
-	                                 WINDOW_WIDTH, WINDOW_HEIGHT,
-	                                 0, &window, &renderer))
+		WINDOW_WIDTH, WINDOW_HEIGHT,
+		0, &window, &renderer))
 		throw "window or renderer: "s + SDL_GetError();
 
 	// Carga las texturas al inicio
@@ -64,7 +64,7 @@ Game::Game()
 	// SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
 	// TODO: crear los objetos del juego
-	bow = new Bow(Rectangle(Point2D((float)WINDOW_WIDTH/2,(float)WINDOW_HEIGHT/2), 100, 100),textures[0],2,2,false);
+	bow = new Bow(Rectangle(), this);
 }
 
 Game::~Game()
@@ -93,6 +93,7 @@ void
 Game::update()
 {
 	// TODO
+	bow->update(55.0f);
 }
 
 void
@@ -101,6 +102,7 @@ Game::run()
 	while (!exit) {
 		handleEvents();
 		// TODO: implementar bucle del juego
+		update();
 		render();
 	}
 }
@@ -113,8 +115,12 @@ Game::handleEvents()
 	// Only quit is handled directly, everything else is delegated
 	while (SDL_PollEvent(&event)) {
 		if (event.type == SDL_EVENT_QUIT)
+		{
 			exit = true;
-
+			break;
+		}
+		// 
+		bow->handleEvent(event);
 		// TODO
 	}
 }
