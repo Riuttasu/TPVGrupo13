@@ -32,6 +32,9 @@ constexpr array<TextureSpec, Game::NUM_TEXTURES> textureList{
 	TextureSpec{"balloons.png", 7, 6},
 };
 
+// generador de números aleatorios
+random_device semilla; // número aleatorio del hardware
+mt19937_64 randomGen(semilla()); // generador de números aleatorios
 
 Game::Game()
 	: exit(false)
@@ -66,10 +69,7 @@ Game::Game()
 	// creacion de los objetos del juego
 	bow = new Bow(Rectangle(Point2D<float>(WINDOW_WIDTH / 15, WINDOW_HEIGHT / 2), 50, 50), this);
 	//arrows.push_back(new Arrow(Rectangle(Point2D<float>(WINDOW_WIDTH/2,WINDOW_HEIGHT/2),50,50), this));
-	for (int i = 0; i < 10; i++) {
-		balloons.push_back(new Balloon(WINDOW_WIDTH / 3 + i * 50, WINDOW_HEIGHT, i%7, 10, getTexture(TextureName::BALLOON)));
-	}
-	//balloons.push_back(new Balloon(WINDOW_WIDTH / 2, WINDOW_HEIGHT, 1, 10, getTexture(TextureName::BALLOON)));
+	balloons.push_back(new Balloon(WINDOW_WIDTH / 2, WINDOW_HEIGHT, 1, 10, getTexture(TextureName::BALLOON)));
 }
 
 Game::~Game()
@@ -104,7 +104,18 @@ Game::update(float delta)
 	bow->update(delta);
 	for (Arrow* a : arrows) a->update(delta);
 	for (Balloon* b : balloons) b->update(delta);
-	
+
+	// generacion de globos a velocidad constante
+	static float timeLastBalloon = 0;
+	timeLastBalloon += delta;
+	if (timeLastBalloon >= 6.0f) {
+		timeLastBalloon = 0;
+		//int posX = WINDOW_WIDTH / 3 + randomGen() % ((WINDOW_WIDTH + 150) / 2);
+		int posX = uniform_int_distribution<int>(WINDOW_WIDTH / 3, WINDOW_WIDTH - 100)(randomGen); // posicion aleatoria entre 1/3 y el fin (con margen)
+		int color = uniform_int_distribution<int>(0, 6)(randomGen); // color aleatorio entre 0 y 6
+		float velY = uniform_real_distribution<float>(7.6f, 10.1f)(randomGen); // velocidad aleatoria entre 8 y 10
+		balloons.push_back(new Balloon(posX, WINDOW_HEIGHT, color, velY, getTexture(TextureName::BALLOON)));
+	}
 }
 
 void
