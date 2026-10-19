@@ -6,8 +6,6 @@
 
 #include "texture.h"
 
-#include "balloon.h"
-
 #include <random> // para generar valores aleatorios
 
 using namespace std;
@@ -31,6 +29,7 @@ constexpr array<TextureSpec, Game::NUM_TEXTURES> textureList{
 	{"arrow.png"},
 	TextureSpec{"balloons.png", 7, 6},
 };
+
 
 Game::Game()
   : exit(false)

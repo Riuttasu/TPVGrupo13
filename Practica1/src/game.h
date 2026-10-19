@@ -44,8 +44,7 @@ private:
 
 	bool exit;
 
-	// Elemento del juego
-	// TODO: añadir atributos para los objetos del juego
+	// Elementos del juego
 
 public:
 	Game();
