@@ -8,15 +8,15 @@ class Game; // no se si deberia hacer esto
 class Arrow
 {
 private:
-	Game* collisions;
+	const Game* game;
 	Rectangle body;
-	Vector2D<float> vel;
+	Vector2D<float> vel = Vector2D(3.0f,0.0f);
 public:
 	// Constructora
-	Arrow(Game* game, Rectangle dims, Vector2D<float> velocity);
+	Arrow(Rectangle dims, const Game* g);
 	// Destructora
 	~Arrow();
-	void update();
+	void update(float delta);
 	void render();
 };
 #define ARROW_H

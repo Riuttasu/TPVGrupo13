@@ -43,7 +43,7 @@ private:
 	std::array<Texture*, NUM_TEXTURES> textures;
 
 	void render() const;
-	void update();
+	void update(float delta);
 	void handleEvents();
 
 	bool exit;

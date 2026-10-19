@@ -36,7 +36,7 @@ public:
 	{
 		return { x * otro.x + y * otro.y };
 	}
-	Vector2D operator*(const int num) const
+	Vector2D operator*(const T num) const
 	{
 		return { x * num, y * num };
 	}

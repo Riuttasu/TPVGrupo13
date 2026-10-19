@@ -64,7 +64,8 @@ Game::Game()
 	// SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
 	// TODO: crear los objetos del juego
-	bow = new Bow(Rectangle(), this);
+	bow = new Bow(Rectangle(Point2D<float>(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 50, 50), this);
+	arrows.push_back(new Arrow(Rectangle(Point2D<float>(WINDOW_WIDTH/2,WINDOW_HEIGHT/2),50,50), this));
 }
 
 Game::~Game()
@@ -73,6 +74,7 @@ Game::~Game()
 	window = nullptr;
 	renderer = nullptr;
 	delete bow;
+	for (Arrow* a : arrows) delete a;
 	for (auto& texture : textures) {
 		delete texture;
 	}
@@ -85,15 +87,17 @@ Game::render() const
 	// TODO
 
 	bow->render();
+	for (Arrow* a : arrows) a->render();
 	SDL_RenderPresent(renderer);
 
 }
 
 void
-Game::update()
+Game::update(float delta)
 {
 	// TODO
-	bow->update(55.0f);
+	bow->update(delta);
+	for (Arrow* a : arrows) a->update(delta);
 }
 
 void
@@ -102,7 +106,7 @@ Game::run()
 	while (!exit) {
 		handleEvents();
 		// TODO: implementar bucle del juego
-		update();
+		update(0.01f);
 		render();
 	}
 }

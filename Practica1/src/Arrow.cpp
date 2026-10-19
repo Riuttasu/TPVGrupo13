@@ -1,15 +1,21 @@
 #include "Arrow.h"
-Arrow::Arrow(Game* game, Rectangle dims, Vector2D<float> velocity) :
-	collisions(game), body(dims), vel(velocity)
+Arrow::Arrow(Rectangle dims, const Game* g) :
+	game(g), body(dims)
 {
 };
 Arrow::~Arrow() 
 {
+
 }
-void Arrow::update()
+void Arrow::update(float delta)
 {
-	body.move(vel);
+	body.move(vel*delta);
 }
 void Arrow::render()
 {
+	Texture* texture = game->getTexture(Game::TextureName::ARROW);
+	if (texture)
+	{
+		texture->render(body.to_sdl());
+	}
 }
