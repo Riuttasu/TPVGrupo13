@@ -63,9 +63,9 @@ Game::Game()
 	// Configura que se pueden utilizar capas translúcidas
 	// SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
-	// TODO: crear los objetos del juego
-	bow = new Bow(Rectangle(Point2D<float>(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 50, 50), this);
-	arrows.push_back(new Arrow(Rectangle(Point2D<float>(WINDOW_WIDTH/2,WINDOW_HEIGHT/2),50,50), this));
+	// creacion de los objetos del juego
+	bow = new Bow(Rectangle(Point2D<float>(WINDOW_WIDTH / 15, WINDOW_HEIGHT / 2), 50, 50), this);
+	//arrows.push_back(new Arrow(Rectangle(Point2D<float>(WINDOW_WIDTH/2,WINDOW_HEIGHT/2),50,50), this));
 }
 
 Game::~Game()
@@ -84,10 +84,10 @@ void
 Game::render() const
 {
 	SDL_RenderClear(renderer);
-	// TODO
-
+	// Delegacion de render a objetos
 	bow->render();
 	for (Arrow* a : arrows) a->render();
+	//
 	SDL_RenderPresent(renderer);
 
 }
@@ -95,7 +95,7 @@ Game::render() const
 void
 Game::update(float delta)
 {
-	// TODO
+	// Delegacion de update a objetos
 	bow->update(delta);
 	for (Arrow* a : arrows) a->update(delta);
 }
@@ -123,9 +123,8 @@ Game::handleEvents()
 			exit = true;
 			break;
 		}
-		// 
+		// Delegacion de eventos a objetos
 		bow->handleEvent(event);
-		// TODO
 	}
 }
 

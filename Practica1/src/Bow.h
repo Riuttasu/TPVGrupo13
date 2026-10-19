@@ -21,6 +21,7 @@ public:
 	void handleEvent(const SDL_Event& event);
 	void update(float delta);
 	void render(); 
+	void Shoot();
 };
 #define BOW_H
 #endif // !BOW_H
