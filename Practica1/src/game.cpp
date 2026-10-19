@@ -6,6 +6,8 @@
 
 #include "texture.h"
 
+#include "vector2D.h"
+
 #include <random> // para generar valores aleatorios
 
 using namespace std;
@@ -62,6 +64,7 @@ Game::Game()
 	// SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
 	// TODO: crear los objetos del juego
+	bow = new Bow(Rectangle(Point2D((float)WINDOW_WIDTH/2,(float)WINDOW_HEIGHT/2), 100, 100),textures[0],2,2,false);
 }
 
 Game::~Game()
@@ -69,6 +72,7 @@ Game::~Game()
 	// TODO: liberar la memoria reservada por la clase
 	window = nullptr;
 	renderer = nullptr;
+	delete bow;
 	for (auto& texture : textures) {
 		delete texture;
 	}
@@ -78,10 +82,11 @@ void
 Game::render() const
 {
 	SDL_RenderClear(renderer);
-
 	// TODO
 
+	bow->render();
 	SDL_RenderPresent(renderer);
+
 }
 
 void
@@ -96,6 +101,7 @@ Game::run()
 	while (!exit) {
 		handleEvents();
 		// TODO: implementar bucle del juego
+		render();
 	}
 }
 

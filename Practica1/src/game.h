@@ -5,7 +5,8 @@
 #include <array>
 #include <istream>
 #include <vector>
-
+// Objetos
+#include "Bow.h"
 // #include "rectangle.h"
 
 // Declaraciones anticipadas
@@ -45,7 +46,7 @@ private:
 	bool exit;
 
 	// Elementos del juego
-
+	Bow* bow; // Arco
 public:
 	Game();
 	~Game();
