@@ -59,7 +59,12 @@ Game::Game()
 		}
 	}
 	catch (...) {
-		// TODO: liberar la memoria reservada
+		// liberar la memoria reservada
+		window = nullptr;
+		renderer = nullptr;
+		for (auto& texture : textures) {
+			delete texture;
+		}
 		throw; // relanza la excepción
 	}
 
@@ -74,7 +79,7 @@ Game::Game()
 
 Game::~Game()
 {
-	// TODO: liberar la memoria reservada por la clase
+	//  liberar la memoria reservada por la clase
 	window = nullptr;
 	renderer = nullptr;
 	for (auto& texture : textures) {
@@ -103,14 +108,18 @@ Game::update(float delta)
 	// Delegacion de update a objetos
 	bow->update(delta);
 	for (Arrow* a : arrows) a->update(delta);
-	for (Balloon* b : balloons) b->update(delta);
+	for (int i = 0; i < balloons.size(); i++) {
+		if (!balloons[i]->update(delta)) {
+			delete balloons[i];
+			balloons.erase(balloons.begin() + i);
+		}
+	}
 
 	// generacion de globos a velocidad constante
 	static float timeLastBalloon = 0;
 	timeLastBalloon += delta;
-	if (timeLastBalloon >= 6.0f) {
+	if (timeLastBalloon >= 7.0f) {
 		timeLastBalloon = 0;
-		//int posX = WINDOW_WIDTH / 3 + randomGen() % ((WINDOW_WIDTH + 150) / 2);
 		int posX = uniform_int_distribution<int>(WINDOW_WIDTH / 3, WINDOW_WIDTH - 100)(randomGen); // posicion aleatoria entre 1/3 y el fin (con margen)
 		int color = uniform_int_distribution<int>(0, 6)(randomGen); // color aleatorio entre 0 y 6
 		float velY = uniform_real_distribution<float>(7.6f, 10.1f)(randomGen); // velocidad aleatoria entre 8 y 10
