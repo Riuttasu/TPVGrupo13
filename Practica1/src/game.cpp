@@ -66,6 +66,11 @@ Game::Game()
 Game::~Game()
 {
 	// TODO: liberar la memoria reservada por la clase
+	window = nullptr;
+	renderer = nullptr;
+	for (auto& texture : textures) {
+		delete texture;
+	}
 }
 
 void

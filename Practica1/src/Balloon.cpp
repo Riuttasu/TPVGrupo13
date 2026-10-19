@@ -10,13 +10,12 @@ Balloon::Balloon(float posX, float posY, int color, float velY, Texture* texture
 }
 
 // render del globo
-void Balloon::render() const
-{
+void Balloon::render() const{
+
 }
 
 // update para el movimiento del globo
-bool Balloon::update(float delta)
-{
+bool Balloon::update(float delta){
 	if (this->body.getTopLeftCorner().getY() + this->body.getHeight() < 0) {
 		return false; // el globo ha salido de la pantalla
 	}
@@ -31,5 +30,5 @@ bool Balloon::update(float delta)
 // detector de colisiones
 bool Balloon::Hit(const Rectangle& obj)
 {
-	return true;
+	return false;
 }
