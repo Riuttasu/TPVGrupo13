@@ -11,17 +11,10 @@ Balloon::Balloon(float posX, float posY, int color, float velY, Texture* texture
 
 // render del globo
 void Balloon::render() const{
-	SDL_FRect destRect; // rectángulo destino en la pantalla
-	// pilla el las dimensiones y coordenadas del body del globo
-	destRect.x = body.getTopLeftCorner().getX();
-	destRect.y = body.getTopLeftCorner().getY();
-	destRect.w = body.getWidth();
-	destRect.h = body.getHeight();
-
 	// luego se mirará la animación de la explosión del globo
 
 	// render del globo normal (color que sea)
-	texture->renderFrame(destRect, color, 0);
+	texture->renderFrame(body.to_sdl(), color, 0);
 }
 
 // update para el movimiento del globo

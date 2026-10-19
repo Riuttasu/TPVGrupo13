@@ -1,6 +1,6 @@
 #pragma once
 #ifndef BALLOON_H
-#define BALLOON_H
+#define BALOOON_H
 #include "rectangle.h"
 #include "texture.h"
 class Balloon

@@ -66,6 +66,7 @@ Game::Game()
 	// creacion de los objetos del juego
 	bow = new Bow(Rectangle(Point2D<float>(WINDOW_WIDTH / 15, WINDOW_HEIGHT / 2), 50, 50), this);
 	//arrows.push_back(new Arrow(Rectangle(Point2D<float>(WINDOW_WIDTH/2,WINDOW_HEIGHT/2),50,50), this));
+	balloons.push_back(new Balloon(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 50, 1, 10, getTexture(TextureName::BALLOON)));
 }
 
 Game::~Game()
@@ -78,6 +79,7 @@ Game::~Game()
 	for (auto& texture : textures) {
 		delete texture;
 	}
+	for (Balloon* b : balloons) delete b;
 }
 
 void
@@ -87,7 +89,7 @@ Game::render() const
 	// Delegacion de render a objetos
 	bow->render();
 	for (Arrow* a : arrows) a->render();
-	//
+	for (Balloon* b : balloons) b->render();
 	SDL_RenderPresent(renderer);
 
 }
@@ -98,6 +100,7 @@ Game::update(float delta)
 	// Delegacion de update a objetos
 	bow->update(delta);
 	for (Arrow* a : arrows) a->update(delta);
+	for (Balloon* b : balloons) b->update(delta);
 }
 
 void

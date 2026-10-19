@@ -9,12 +9,14 @@
 // Objetos
 #include "Bow.h"
 #include "Arrow.h"
+#include "Balloon.h"
 // #include "rectangle.h"
 
 // Declaraciones anticipadas
 class Texture;
 class Bow;
 class Arrow;
+class Balloon;
 /**
  * Clase principal del juego.
  */
@@ -51,6 +53,7 @@ private:
 	// Elementos del juego
 	Bow* bow; // Arco
 	std::vector<Arrow*> arrows; // Flechas
+	std::vector<Balloon*> balloons; // Globos
 public:
 	Game();
 	~Game();
