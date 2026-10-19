@@ -77,11 +77,11 @@ Game::~Game()
 	// TODO: liberar la memoria reservada por la clase
 	window = nullptr;
 	renderer = nullptr;
-	delete bow;
-	for (Arrow* a : arrows) delete a;
 	for (auto& texture : textures) {
 		delete texture;
 	}
+	delete bow;
+	for (Arrow* a : arrows) delete a;
 	for (Balloon* b : balloons) delete b;
 }
 
