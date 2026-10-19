@@ -6,6 +6,8 @@
 
 #include "texture.h"
 
+#include "balloon.h"
+
 #include <random> // para generar valores aleatorios
 
 using namespace std;
