@@ -97,8 +97,8 @@ Game::render() const
 	bow->render();
 	for (Arrow* a : arrows) a->render();
 	for (Balloon* b : balloons) b->render();
+	//
 	SDL_RenderPresent(renderer);
-
 }
 
 void
@@ -106,7 +106,12 @@ Game::update(float delta)
 {
 	// Delegacion de update a objetos
 	bow->update(delta);
-	for (Arrow* a : arrows) a->update(delta);
+	for (int i = 0; i < arrows.size(); i++) {
+		if (!arrows[i]->update(delta)) {
+			delete arrows[i];
+			arrows.erase(arrows.begin() + i);
+		}
+	}
 	for (int i = 0; i < balloons.size(); i++) {
 		if (!balloons[i]->update(delta)) {
 			delete balloons[i];

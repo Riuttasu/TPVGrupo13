@@ -9,15 +9,18 @@ class Game;
 class Arrow
 {
 private:
+	// Puntero al juego
 	const Game* game;
+	// Cuerpo en el que va a ser renderizado
 	Rectangle body;
+	// Velocidad
 	Vector2D<float> vel = Vector2D(3.0f,0.0f);
 public:
 	// Constructora
 	Arrow(Rectangle dims, const Game* g);
 	// Destructora
 	~Arrow();
-	void update(float delta);
+	bool update(float delta);
 	void render() const;
 };
 #define ARROW_H

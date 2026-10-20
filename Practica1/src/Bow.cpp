@@ -16,12 +16,14 @@ void Bow::handleEvent(const SDL_Event& event)
 		case SDLK_DOWN: dirY = 1; break;
 		case SDLK_UP: dirY = -1; break;
 		// Armar el arco
-		case SDLK_LEFT: strung = true; break;
+		case SDLK_LEFT: 
+			if (numArrows>0) strung = true; 
+			break;
 		// Disparar el arco
 		case SDLK_RIGHT:
 			if (strung && numArrows > 0) Shoot();
 			break;
-		default: dirY = 0; break;
+		default: break;
 		}
 	}
 	// Si se ha soltado una tecla

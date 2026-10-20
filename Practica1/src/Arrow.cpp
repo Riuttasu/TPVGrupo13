@@ -7,9 +7,10 @@ Arrow::~Arrow()
 {
 
 }
-void Arrow::update(float delta)
+bool Arrow::update(float delta)
 {
 	body.move(vel*delta);
+	return (body.getTopLeftCorner().getX() < game->WINDOW_WIDTH);
 }
 void Arrow::render() const
 {
