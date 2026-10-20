@@ -49,6 +49,8 @@ private:
 	void handleEvents();
 
 	bool exit;
+	// Manejo de tiempo
+	uint64_t startTime, frameTime = 0;
 
 	// Elementos del juego
 	Bow* bow; // Arco

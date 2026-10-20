@@ -45,7 +45,8 @@ Game::Game()
 
 	if (!SDL_CreateWindowAndRenderer(WINDOW_TITLE,
 		WINDOW_WIDTH, WINDOW_HEIGHT,
-		0, &window, &renderer))
+		0, &window, &renderer)
+		|| !SDL_SetRenderDrawColor(renderer,100,160,190,1))
 		throw "window or renderer: "s + SDL_GetError();
 
 	// Carga las texturas al inicio
@@ -122,11 +123,11 @@ Game::update(float delta)
 	// generacion de globos a velocidad constante
 	static float timeLastBalloon = 0;
 	timeLastBalloon += delta;
-	if (timeLastBalloon >= 7.0f) {
+	if (timeLastBalloon >= 70.0f) {
 		timeLastBalloon = 0;
 		int posX = uniform_int_distribution<int>(WINDOW_WIDTH / 3, WINDOW_WIDTH - 100)(randomGen); // posicion aleatoria entre 1/3 y el fin (con margen)
 		int color = uniform_int_distribution<int>(0, 6)(randomGen); // color aleatorio entre 0 y 6
-		float velY = uniform_real_distribution<float>(7.6f, 10.1f)(randomGen); // velocidad aleatoria entre 8 y 10
+		float velY = uniform_real_distribution<float>(0.76f, 1.01f)(randomGen); // velocidad aleatoria entre 8 y 10
 		balloons.push_back(new Balloon(posX, WINDOW_HEIGHT, color, velY, getTexture(TextureName::BALLOON)));
 	}
 }
@@ -135,10 +136,15 @@ void
 Game::run()
 {
 	while (!exit) {
+		startTime = SDL_GetTicks();
+
 		handleEvents();
-		// TODO: implementar bucle del juego
-		update(0.01f);
+		update(FRAME_PERIOD);
 		render();
+		// Tiempo
+		frameTime = SDL_GetTicks() - startTime;
+		if (frameTime < FRAME_PERIOD)
+			SDL_Delay(FRAME_PERIOD - frameTime);
 	}
 }
 
