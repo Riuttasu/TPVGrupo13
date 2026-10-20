@@ -73,7 +73,6 @@ Game::Game()
 
 	// creacion de los objetos del juego
 	bow = new Bow(Rectangle(Point2D<float>(WINDOW_WIDTH / 15, WINDOW_HEIGHT / 2), 50, 50), this);
-	//arrows.push_back(new Arrow(Rectangle(Point2D<float>(WINDOW_WIDTH/2,WINDOW_HEIGHT/2),50,50), this));
 	balloons.push_back(new Balloon(WINDOW_WIDTH / 2, WINDOW_HEIGHT, 1, 10, getTexture(TextureName::BALLOON)));
 }
 
@@ -154,7 +153,11 @@ Game::handleEvents()
 		bow->handleEvent(event);
 	}
 }
-
+void
+Game::AddArrow(Point2D<float> topleftcorn)
+{
+	arrows.push_back(new Arrow(Rectangle(topleftcorn, 45, 22), this));
+}
 // bool
 // Game::checkCollision(const Rectangle& rect)
 // {

@@ -63,7 +63,8 @@ public:
 
 	// Ejecuta el bucle principal del juego
 	void run();
-
+	// anade una flecha a la escena en la posicion dada como esquina superior izquierda
+	void AddArrow(Point2D<float> topleftcorn);
 	// Comprueba si hay algún objeto colocado en ese rectángulo
 	// bool checkCollision(const Rectangle& rect);
 };

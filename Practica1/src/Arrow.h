@@ -4,7 +4,8 @@
 #include "rectangle.h"
 #include "texture.h"
 #include "vector2D.h"
-class Game; // no se si deberia hacer esto
+// Declaraciones anticipadas
+class Game; 
 class Arrow
 {
 private:
@@ -17,7 +18,7 @@ public:
 	// Destructora
 	~Arrow();
 	void update(float delta);
-	void render();
+	void render() const;
 };
 #define ARROW_H
 #endif // !ARROW_H

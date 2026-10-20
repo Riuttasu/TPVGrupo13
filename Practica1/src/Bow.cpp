@@ -1,5 +1,5 @@
 #include "Bow.h"
-Bow::Bow(Rectangle dims, const Game* g) :
+Bow::Bow(Rectangle dims, Game* g) :
 	body(dims), game(g)
 {}
 Bow::~Bow()
@@ -17,7 +17,10 @@ void Bow::handleEvent(const SDL_Event& event)
 		case SDLK_UP: dirY = -1; break;
 		// Armar el arco
 		case SDLK_LEFT: strung = true; break;
-		case SDLK_RIGHT: break;
+		// Disparar el arco
+		case SDLK_RIGHT:
+			if (strung && numArrows > 0) Shoot();
+			break;
 		default: dirY = 0; break;
 		}
 	}
@@ -40,7 +43,7 @@ void Bow::update(float delta)
 	else if (body.getTopLeftCorner().getY()+body.getHeight() > game->WINDOW_HEIGHT)
 	body = Rectangle(Point2D<float>(body.getTopLeftCorner().getX(), game->WINDOW_HEIGHT - body.getHeight()), body.getWidth(), body.getHeight());
 }
-void Bow::render()
+void Bow::render() const
 {
 	// Consigue la textura del game
 	Texture* texture = game->getTexture(Game::TextureName::BOW);
@@ -53,5 +56,14 @@ void Bow::render()
 }
 void Bow::Shoot()
 {
-
+	if (game)
+	{
+		// Llama al add arrow de game para que aparezca una flecha
+		// TopleftCorner - parte width del arco para que salga desde el medio 
+		game->AddArrow(body.getTopLeftCorner()+Point2D<float>(0,body.getHeight()/4));
+		// Desarma el arco
+		strung = false;
+		// Quita una flecha del total
+		--numArrows;
+	}
 }

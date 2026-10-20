@@ -11,7 +11,7 @@ void Arrow::update(float delta)
 {
 	body.move(vel*delta);
 }
-void Arrow::render()
+void Arrow::render() const
 {
 	Texture* texture = game->getTexture(Game::TextureName::ARROW);
 	if (texture)
