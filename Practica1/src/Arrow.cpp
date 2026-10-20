@@ -3,10 +3,6 @@ Arrow::Arrow(Rectangle dims, const Game* g) :
 	game(g), body(dims)
 {
 };
-Arrow::~Arrow() 
-{
-
-}
 bool Arrow::update(float delta)
 {
 	body.move(vel*delta);

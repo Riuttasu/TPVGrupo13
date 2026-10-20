@@ -2,9 +2,6 @@
 Bow::Bow(Rectangle dims, Game* g) :
 	body(dims), game(g)
 {}
-Bow::~Bow()
-{
-}
 void Bow::handleEvent(const SDL_Event& event)
 {
 	// Si se ha presionado una tecla

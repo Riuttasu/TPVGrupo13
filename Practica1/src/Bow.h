@@ -17,7 +17,6 @@ private:
 	bool strung = false; // Si esta armado o no
 public:
 	Bow(Rectangle dims, Game* game);
-	~Bow();
 	void handleEvent(const SDL_Event& event);
 	void update(float delta);
 	void render() const; 

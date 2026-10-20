@@ -18,8 +18,6 @@ private:
 public:
 	// Constructora
 	Arrow(Rectangle dims, const Game* g);
-	// Destructora
-	~Arrow();
 	bool update(float delta);
 	void render() const;
 };
