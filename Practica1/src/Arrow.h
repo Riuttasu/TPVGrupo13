@@ -14,10 +14,13 @@ private:
 	// Cuerpo en el que va a ser renderizado
 	Rectangle body;
 	// Velocidad
-	Vector2D<float> vel = Vector2D(0.3f,0.0f);
+	Vector2D<float> vel;
 public:
+	// Getters
+	Rectangle GetDims() const { return body; };
 	// Constructora
-	Arrow(Rectangle dims, const Game* g);
+	Arrow(Rectangle dims, const Game* g, Vector2D<float> velocity = Vector2D(0.3f, 0.0f));
+	// Logica
 	bool update(float delta);
 	void render() const;
 };

@@ -16,10 +16,16 @@ private:
 	int numArrows = 5; // Numero de flechas
 	bool strung = false; // Si esta armado o no
 public:
+	// Getters
+	int GetArrowNum() const { return numArrows; };
+	Rectangle GetDims() const { return body; };
+	// Constructora
 	Bow(Rectangle dims, Game* game);
+	// Logica
 	void handleEvent(const SDL_Event& event);
 	void update(float delta);
-	void render() const; 
+	void render() const;
+	// Disparo
 	void Shoot();
 };
 #define BOW_H
