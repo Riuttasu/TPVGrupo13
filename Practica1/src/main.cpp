@@ -6,11 +6,16 @@
 //
 
 #include "game.h"
-
+using namespace std;
 int main(int argc, char* argv[])
 {
-	Game().run();
-
+	try {
+		Game().run();
+	}
+	catch (exception e) {
+		cout << e.what() << endl;
+		return -1;
+	}
 	// TODO: manejar excepciones
 
 	return 0;

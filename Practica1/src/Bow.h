@@ -20,7 +20,7 @@ public:
 	int GetArrowNum() const { return numArrows; };
 	Rectangle GetDims() const { return body; };
 	// Constructora
-	Bow(Rectangle dims, Game* game);
+	Bow(Rectangle dims, Game* game, int arrows);
 	// Logica
 	void handleEvent(const SDL_Event& event);
 	void update(float delta);

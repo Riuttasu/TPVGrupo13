@@ -4,8 +4,9 @@
 
 #include <SDL3/SDL.h>
 #include <array>
-#include <istream>
+#include <fstream>
 #include <vector>
+#include <format>
 // Objetos
 #include "Bow.h"
 #include "Arrow.h"
@@ -47,8 +48,9 @@ private:
 	void render() const;
 	void update(float delta);
 	void handleEvents();
-
-	bool exit;
+	// bools que rompen bucle principal
+	bool exit; // Salida mediante cerrar ventana
+	bool goal; // Salida mediante terminar objetivo/flechas
 	// Manejo de tiempo
 	uint64_t startTime, frameTime = 0;
 
@@ -56,6 +58,10 @@ private:
 	Bow* bow; // Arco
 	std::vector<Arrow*> arrows; // Flechas
 	std::vector<Balloon*> balloons; // Globos
+	// Variables cambiadas por archivo
+	SDL_Color bgColor = SDL_Color(0, 0, 0, 1); // Color del fondo de la ventana
+	int maxArrows = 5; // numero maximo de flechas
+	int balloonDelay = 1000;
 public:
 	Game();
 	~Game();
@@ -69,7 +75,10 @@ public:
 	void AddArrow(Point2D<float> topleftcorn);
 	// Comprueba si hay algún objeto colocado en ese rectángulo
 	// bool checkCollision(const Rectangle& rect);
+	// Carga desde archivo
+	void loadLevel(std::istream& in);
 };
+
 
 inline Texture*
 Game::getTexture(TextureName name) const

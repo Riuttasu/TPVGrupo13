@@ -1,6 +1,6 @@
 #include "Bow.h"
-Bow::Bow(Rectangle dims, Game* g) :
-	body(dims), game(g)
+Bow::Bow(Rectangle dims, Game* g, int arrows) :
+	body(dims), game(g), numArrows(arrows)
 {}
 void Bow::handleEvent(const SDL_Event& event)
 {
