@@ -12,7 +12,7 @@ private:
 	Game* game; // Puntero al juego para conseguir texturas 
 	int dirY = 0; // Direccion de movimiento, 1 abajo, -1 arriba, 0 quieto
 	Rectangle body; // Rectangulo donde se va a renderizar
-	float vel = 2; // Velocidad de movimiento
+	float vel = 1; // Velocidad de movimiento
 	int numArrows = 5; // Numero de flechas
 	bool strung = false; // Si esta armado o no
 public:

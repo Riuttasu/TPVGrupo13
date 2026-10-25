@@ -40,9 +40,7 @@ Game::Game()
 	: exit(false), goal(false)
 {
 	// Lee archivo para inicializar valores de archivo si existe el nivel 1
-	ifstream level(string(LEVEL_ROOT) + "1.txt");
-	if (level) loadLevel(level);
-	else cout << "Cargando nivel por defecto, no se ha podido encontrar el nivel 1";
+	loadLevel(1);
 	// Carga SDL y crea la ventana con su renderizador
 	if (!SDL_Init(SDL_INIT_VIDEO))
 		throw "SDL_Init: "s + SDL_GetError();
@@ -165,7 +163,7 @@ Game::handleEvents()
 {
 	SDL_Event event;
 
-	// Only quit is handled directly, everything else is delegated
+	// quit lo maneja el juego
 	while (SDL_PollEvent(&event)) {
 		if (event.type == SDL_EVENT_QUIT)
 		{
@@ -188,8 +186,13 @@ Game::AddArrow(Point2D<float> topleftcorn)
 //	return false;
 // }
 void
-Game::loadLevel(std::istream& in)
+Game::loadLevel(int levelNum)
 {
+	// Busca un archivo con ese nombre en LEVEL_ROOT, si no hay tira exception
+	fstream level(LEVEL_ROOT + to_string(levelNum) + ".txt");
+	if (!level) throw runtime_error(std::format("No existe archivo con el nombre {}.txt para cargar nivel en {}",levelNum, LEVEL_ROOT));
+	// Abre la lectura de archivo
+	istream& in(level);
 	// Variables que se van a leer inicializadas a -1 para pillar si no se han modificado
 	int arrows = -1;
 	int baldelay = -1;

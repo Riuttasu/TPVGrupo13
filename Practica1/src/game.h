@@ -76,7 +76,7 @@ public:
 	// Comprueba si hay algún objeto colocado en ese rectángulo
 	// bool checkCollision(const Rectangle& rect);
 	// Carga desde archivo
-	void loadLevel(std::istream& in);
+	void loadLevel(int levelNum);
 };
 
 

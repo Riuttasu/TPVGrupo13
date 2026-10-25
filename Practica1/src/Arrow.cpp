@@ -6,6 +6,7 @@ Arrow::Arrow(Rectangle dims, const Game* g, Vector2D<float> velocity) :
 bool Arrow::update(float delta)
 {
 	body.move(vel*delta);
+	// Si se sale por la izquierda de la pantalla devuelve true para que el game la destruya
 	return (body.getTopLeftCorner().getX() < game->WINDOW_WIDTH);
 }
 void Arrow::render() const
