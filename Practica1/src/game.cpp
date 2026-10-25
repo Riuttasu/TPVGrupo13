@@ -186,8 +186,13 @@ Game::AddArrow(Point2D<float> topleftcorn)
 bool
 Game::checkCollision(const Rectangle& rect)
 {
-// TODO
-return false;
+	// comprueba si hay algún globo que colisione con el rectángulo dado
+	for (const auto& balloon : balloons) {
+		if (balloon->Hit(rect)) {
+			return true;
+		}
+	}
+	return false; // si no hay colisiones
 }
 void
 Game::loadLevel(int levelNum)
