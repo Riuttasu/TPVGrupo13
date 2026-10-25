@@ -74,7 +74,7 @@ public:
 	// anade una flecha a la escena en la posicion dada como esquina superior izquierda
 	void AddArrow(Point2D<float> topleftcorn);
 	// Comprueba si hay algún objeto colocado en ese rectángulo
-	// bool checkCollision(const Rectangle& rect);
+	bool checkCollision(const Rectangle& rect);
 	// Carga desde archivo
 	void loadLevel(int levelNum);
 };

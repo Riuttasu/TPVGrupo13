@@ -109,18 +109,22 @@ Game::update(float delta)
 {
 	// Delegacion de update a objetos
 	bow->update(delta);
+
 	for (int i = 0; i < arrows.size(); i++) {
 		if (!arrows[i]->update(delta)) {
 			delete arrows[i];
 			arrows.erase(arrows.begin() + i);
 		}
 	}
+
 	for (int i = 0; i < balloons.size(); i++) {
 		if (!balloons[i]->update(delta)) {
 			delete balloons[i];
 			balloons.erase(balloons.begin() + i);
 		}
 	}
+
+	// cuando todo esta en su sitio se comprueba si hay colisiones entre flechas y globos
 
 	// generacion de globos a velocidad constante
 	static float timeLastBalloon = 0;
@@ -179,12 +183,12 @@ Game::AddArrow(Point2D<float> topleftcorn)
 {
 	arrows.push_back(new Arrow(Rectangle(topleftcorn, 45, 22), this));
 }
-// bool
-// Game::checkCollision(const Rectangle& rect)
-// {
-//	// TODO
-//	return false;
-// }
+bool
+Game::checkCollision(const Rectangle& rect)
+{
+// TODO
+return false;
+}
 void
 Game::loadLevel(int levelNum)
 {
