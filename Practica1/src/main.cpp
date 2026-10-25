@@ -12,11 +12,10 @@ int main(int argc, char* argv[])
 	try {
 		Game().run();
 	}
-	catch (exception e) {
+	catch (const exception& e) {
 		cout << e.what() << endl;
 		return -1;
 	}
-	// TODO: manejar excepciones
 
 	return 0;
 }
