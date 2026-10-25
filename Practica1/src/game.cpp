@@ -123,8 +123,6 @@ Game::update(float delta)
 		}
 	}
 
-	// cuando todo esta en su sitio se comprueba si hay colisiones entre flechas y globos
-
 	// generacion de globos a velocidad constante
 	static float timeLastBalloon = 0;
 	timeLastBalloon += delta;
@@ -183,7 +181,7 @@ Game::AddArrow(Point2D<float> topleftcorn)
 	arrows.push_back(new Arrow(Rectangle(topleftcorn, 45, 22), this));
 }
 bool
-Game::checkCollision(const Rectangle& rect)
+Game::checkCollision(const Rectangle& rect) const
 {
 	// comprueba si hay algún globo que colisione con el rectángulo dado
 	for (const auto& balloon : balloons) {
