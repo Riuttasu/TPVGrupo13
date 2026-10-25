@@ -76,7 +76,6 @@ Game::Game()
 
 	// creacion de los objetos del juego
 	bow = new Bow(Rectangle(Point2D<float>(WINDOW_WIDTH / 15, WINDOW_HEIGHT / 2), 50, 50), this, maxArrows);
-	balloons.push_back(new Balloon(WINDOW_WIDTH / 2, WINDOW_HEIGHT, 1, 10, getTexture(TextureName::BALLOON)));
 }
 
 Game::~Game()
