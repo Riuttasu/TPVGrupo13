@@ -141,28 +141,45 @@ Game::update(float delta)
 void
 Game::run()
 {
+	int level = 1;
 	// bucle principal
 	while (!exit && !goal) {
-		// Start del frame
-		startTime = SDL_GetTicks();
-		// Manejo de eventos
-		handleEvents();
-		// Update con el tiempo por frame que se busca
-		update(FRAME_PERIOD);
-		// Render
-		render();
-		// Se calcula el tiempo del frame desde el start y si se ha llegado al frame period que queriamos
-		frameTime = SDL_GetTicks() - startTime;
-		if (frameTime < FRAME_PERIOD)
-			// Si no hace delay por lo que quede para el frame period
-			SDL_Delay(FRAME_PERIOD - frameTime);
-		// Condicion de game over
-		// 0 flechas, empty de arrows es para dejar que la ultima flecha haga su trayectoria
-		if (bow->GetArrowNum() <= 0 && arrows.empty()) goal = true;
-		cout << points << endl;
+		while (!exit && !goal)
+		{
+			// Start del frame
+			startTime = SDL_GetTicks();
+			// Manejo de eventos
+			handleEvents();
+			// Update con el tiempo por frame que se busca
+			update(FRAME_PERIOD);
+			// Render
+			render();
+			// Se calcula el tiempo del frame desde el start y si se ha llegado al frame period que queriamos
+			frameTime = SDL_GetTicks() - startTime;
+			if (frameTime < FRAME_PERIOD)
+				// Si no hace delay por lo que quede para el frame period
+				SDL_Delay(FRAME_PERIOD - frameTime);
+			// Condicion de game over
+			// 0 flechas, empty de arrows es para dejar que la ultima flecha haga su trayectoria
+			if (bow->GetArrowNum() <= 0 && arrows.empty()) goal = true;
+		}
+		if (goal) {
+			cout << std::format("Completaste el nivel {} con {} con puntos :3, intentando avanzar al nivel {}", level, points, level + 1) << endl;
+			++level;
+			if (fstream(LEVEL_ROOT + to_string(level) + ".txt"))
+			{
+				loadLevel(level);
+				goal = false;
+				points = 0;
+				bow->SetArrowNum(maxArrows);
+			}
+			else
+			{
+				cout << std::format("Nivel {} no encontrado en la lista, no queda juego :d", level) << endl;
+			}
+		}
 	}
 	if (exit) { cout << "Juego abortado" << endl; }
-	else if (goal) { cout << "Felicidades, terminaste el juego con " << points << " puntos :3" << endl; }
 }
 
 void

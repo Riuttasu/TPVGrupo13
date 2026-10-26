@@ -10,7 +10,7 @@ class Arrow
 {
 private:
 	// Puntero al juego
-	 Game* game;
+	Game* game;
 	// Cuerpo en el que va a ser renderizado
 	Rectangle body;
 	// Velocidad

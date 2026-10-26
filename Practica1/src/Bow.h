@@ -19,6 +19,8 @@ public:
 	// Getters
 	int GetArrowNum() const { return numArrows; };
 	Rectangle GetDims() const { return body; };
+	// Setters
+	void SetArrowNum(int n) { numArrows = n; };
 	// Constructora
 	Bow(Rectangle dims, Game* game, int arrows);
 	// Logica

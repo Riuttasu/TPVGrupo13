@@ -2,8 +2,8 @@
 
 InfoBar::InfoBar(const Game* g) : game(g)
 { 
-	arrows = Rectangle(Point2D<float>(game->WINDOW_WIDTH / 10,game->WINDOW_HEIGHT/25), 
-		game->WINDOW_WIDTH/30, game->WINDOW_WIDTH/40);
+	arrows = Rectangle(Point2D<float>(game->WINDOW_WIDTH / 15,game->WINDOW_HEIGHT/30), 
+		game->WINDOW_WIDTH/20, game->WINDOW_WIDTH/40);
 }
 void InfoBar::render()
 {
