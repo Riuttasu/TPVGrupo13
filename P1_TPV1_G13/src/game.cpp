@@ -75,7 +75,7 @@ Game::Game()
 	// SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
 	// creacion de los objetos del juego
-	bow = new Bow(Rectangle(Point2D<float>(WINDOW_WIDTH / 15, WINDOW_HEIGHT / 2), 50, 50), this, maxArrows);
+	bow = new Bow(this, Rectangle(Point2D<float>(WINDOW_WIDTH / 15, WINDOW_HEIGHT / 2), BOW_WIDTH, BOW_HEIGHT), maxArrows);
 	infobar = new InfoBar(this);
 }
 
@@ -201,7 +201,7 @@ Game::handleEvents()
 void
 Game::AddArrow(Point2D<float> topleftcorn)
 {
-	arrows.push_back(new Arrow(Rectangle(topleftcorn, 45, 22), this));
+	arrows.push_back(new Arrow(Rectangle(topleftcorn,ARROW_WIDTH , ARROW_HEIGHT), this));
 }
 int
 Game::getArrows() const
@@ -233,7 +233,6 @@ Game::loadLevel(int levelNum)
 	int arrows = -1, baldelay = -1, r = -1, g = -1, b = -1, balpoints = -1;
 	//Lectura de archivo
 	string line = "";
-	int lineNum = 0;
 	// Lee palabro por palabro hasta quedarse sin archivo
 	while (in >> line)
 	{

@@ -33,7 +33,12 @@ public:
 	// Tamaño real de la ventana
 	static constexpr int WINDOW_WIDTH = 800;
 	static constexpr int WINDOW_HEIGHT = 600;
-
+	// Tamaño de objetos
+	static constexpr int ARROW_WIDTH = 45;
+	static constexpr int ARROW_HEIGHT = 22;
+	static constexpr int BOW_WIDTH = 50;
+	static constexpr int BOW_HEIGHT = 50;
+	//
 	enum TextureName
 	{
 		BOW = 0,

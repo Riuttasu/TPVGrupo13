@@ -22,7 +22,7 @@ public:
 	// Setters
 	void SetArrowNum(int n) { numArrows = n; };
 	// Constructora
-	Bow(Rectangle dims, Game* game, int arrows);
+	Bow(Game* game, Rectangle dims, int arrows);
 	// Logica
 	void handleEvent(const SDL_Event& event);
 	void update(float delta);
