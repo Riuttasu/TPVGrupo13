@@ -10,7 +10,7 @@ class Arrow
 {
 private:
 	// Puntero al juego
-	const Game* game;
+	 Game* game;
 	// Cuerpo en el que va a ser renderizado
 	Rectangle body;
 	// Velocidad
@@ -19,7 +19,7 @@ public:
 	// Getters
 	Rectangle GetDims() const { return body; };
 	// Constructora
-	Arrow(Rectangle dims, const Game* g, Vector2D<float> velocity = Vector2D(0.3f, 0.0f));
+	Arrow(Rectangle dims,  Game* g, Vector2D<float> velocity = Vector2D(0.3f, 0.0f));
 	// Logica
 	bool update(float delta);
 	void render() const;

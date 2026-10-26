@@ -11,6 +11,7 @@
 #include "Bow.h"
 #include "Arrow.h"
 #include "Balloon.h"
+#include "InfoBar.h"
 // #include "rectangle.h"
 
 // Declaraciones anticipadas
@@ -18,6 +19,7 @@ class Texture;
 class Bow;
 class Arrow;
 class Balloon;
+class InfoBar;
 /**
  * Clase principal del juego.
  */
@@ -53,28 +55,32 @@ private:
 	bool goal; // Salida mediante terminar objetivo/flechas
 	// Manejo de tiempo
 	uint64_t startTime, frameTime = 0;
-
+	// Puntos
+	int points = 0;
 	// Elementos del juego
-	Bow* bow; // Arco
+	Bow* bow = nullptr; // Arco
 	std::vector<Arrow*> arrows; // Flechas
 	std::vector<Balloon*> balloons; // Globos
+	InfoBar* infobar = nullptr; // Barra de informacion para el jugador
 	// Variables cambiadas por archivo
 	SDL_Color bgColor = SDL_Color(0, 0, 0, 1); // Color del fondo de la ventana
-	int maxArrows = 5; // numero maximo de flechas
-	int balloonDelay = 1000;
+	int maxArrows = 5; // Numero maximo de flechas
+	int balloonDelay = 1000; // Tiempo entre globos
+	int balloonPoints = 10; // Numero de puntos por globo
 public:
 	Game();
 	~Game();
 
 	// Obtiene una textura por su nombre
 	Texture* getTexture(TextureName name) const;
-
+	// Obtiene el numero de flechas
+	int getArrows() const;
 	// Ejecuta el bucle principal del juego
 	void run();
 	// anade una flecha a la escena en la posicion dada como esquina superior izquierda
 	void AddArrow(Point2D<float> topleftcorn);
 	// Comprueba si hay algún objeto colocado en ese rectángulo
-	bool checkCollision(const Rectangle& rect) const;
+	bool checkCollision(const Rectangle& rect) ;
 	// Carga desde archivo
 	void loadLevel(int levelNum);
 };
@@ -85,5 +91,4 @@ Game::getTexture(TextureName name) const
 {
 	return textures[name];
 }
-
 #endif // GAME_H

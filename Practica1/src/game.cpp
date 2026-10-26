@@ -37,7 +37,7 @@ random_device semilla; // número aleatorio del hardware
 mt19937_64 randomGen(semilla()); // generador de números aleatorios
 
 Game::Game()
-	: exit(false), goal(false)
+	: exit(false), goal(false), points(0)
 {
 	// Lee archivo para inicializar valores de archivo si existe el nivel 1
 	loadLevel(1);
@@ -76,6 +76,7 @@ Game::Game()
 
 	// creacion de los objetos del juego
 	bow = new Bow(Rectangle(Point2D<float>(WINDOW_WIDTH / 15, WINDOW_HEIGHT / 2), 50, 50), this, maxArrows);
+	infobar = new InfoBar(this);
 }
 
 Game::~Game()
@@ -86,7 +87,8 @@ Game::~Game()
 	for (auto& texture : textures) {
 		delete texture;
 	}
-	delete bow;
+	delete bow; bow = nullptr;
+	delete infobar; infobar = nullptr;
 	for (Arrow* a : arrows) delete a;
 	for (Balloon* b : balloons) delete b;
 }
@@ -97,6 +99,7 @@ Game::render() const
 	SDL_RenderClear(renderer);
 	// Delegacion de render a objetos
 	bow->render();
+	infobar->render();
 	for (Arrow* a : arrows) a->render();
 	for (Balloon* b : balloons) b->render();
 	//
@@ -156,7 +159,10 @@ Game::run()
 		// Condicion de game over
 		// 0 flechas, empty de arrows es para dejar que la ultima flecha haga su trayectoria
 		if (bow->GetArrowNum() <= 0 && arrows.empty()) goal = true;
+		cout << points << endl;
 	}
+	if (exit) { cout << "Juego abortado" << endl; }
+	else if (goal) { cout << "Felicidades, terminaste el juego con " << points << " puntos :3" << endl; }
 }
 
 void
@@ -180,12 +186,19 @@ Game::AddArrow(Point2D<float> topleftcorn)
 {
 	arrows.push_back(new Arrow(Rectangle(topleftcorn, 45, 22), this));
 }
+int
+Game::getArrows() const
+{
+	if (bow) return bow->GetArrowNum();
+	else return -1;
+}
 bool
-Game::checkCollision(const Rectangle& rect) const
+Game::checkCollision(const Rectangle& rect)
 {
 	// comprueba si hay algún globo que colisione con el rectángulo dado
 	for (const auto& balloon : balloons) {
 		if (balloon->Hit(rect)) {
+			points += balloonPoints;
 			return true;
 		}
 	}
@@ -200,9 +213,7 @@ Game::loadLevel(int levelNum)
 	// Abre la lectura de archivo
 	istream& in(level);
 	// Variables que se van a leer inicializadas a -1 para pillar si no se han modificado
-	int arrows = -1;
-	int baldelay = -1;
-	int r = -1, g = -1, b = -1;
+	int arrows = -1, baldelay = -1, r = -1, g = -1, b = -1, balpoints = -1;
 	//Lectura de archivo
 	string line = "";
 	int lineNum = 0;
@@ -221,6 +232,9 @@ Game::loadLevel(int levelNum)
 		}
 		else if (line == "bgcolor") {
 			in >> r >> g >> b;
+		}
+		else if (line == "balpoints") {
+			in >> balloonPoints;
 		}
 		// Si no es ninguna de ellas, ignora
 		else in.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -241,5 +255,9 @@ Game::loadLevel(int levelNum)
 		if (r < -1 || r > 255 || g < -1 || g > 255 || b < -1 || b > 255) 
 			throw runtime_error(format("Lectura de archivo fallada, propiedad con valor fuera de rango, ({},{},{}), propiedad color fondo", r, g,b));
 		bgColor = SDL_Color(r,g,b,1);
+	}
+	if (balpoints != -1) {
+		if (balpoints < -1) throw runtime_error(format("Lectura de archivo fallada, propiedad con valor fuera de rango, {}, propiedad puntos globos", balpoints));
+		balloonPoints = balpoints;
 	}
 }

@@ -1,5 +1,5 @@
 #include "Arrow.h"
-Arrow::Arrow(Rectangle dims, const Game* g, Vector2D<float> velocity) :
+Arrow::Arrow(Rectangle dims, Game* g, Vector2D<float> velocity) :
 	game(g), body(dims), vel(velocity)
 {
 };

@@ -27,6 +27,8 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <EnableASAN>true</EnableASAN>
+    <EnableFuzzer>true</EnableFuzzer>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Sanitize|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -101,6 +103,7 @@
     <ClCompile Include="Balloon.cpp" />
     <ClCompile Include="Bow.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="InfoBar.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="rectangle.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -110,6 +113,7 @@
     <ClInclude Include="Balloon.h" />
     <ClInclude Include="Bow.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="InfoBar.h" />
     <ClInclude Include="rectangle.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="vector2D.h" />

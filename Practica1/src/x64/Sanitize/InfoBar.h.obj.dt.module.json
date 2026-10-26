@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "x64\\Sanitize\\InfoBar.obj",
+            "outputs": [
+                "x64\\Sanitize\\InfoBar.h.obj.dt.module.json",
+                "x64\\Sanitize\\InfoBar.h.obj.dt.d.json"
+            ],
+            "requires": []
+        }
+    ]
+}
