@@ -1,0 +1,14 @@
+TPV 1 Practica 2
+1- GO, SO, MO objetos nuevos 
+2- QUE LOS OBJETOS HEREDEN
+3- LISTA POLIMÓRFICA
+4- CARGAR OPCIONES
+5- PASAR DE NIVEL
+6- MARIPOSAS
+7- EXCEPTIONS
+8- GUARDAR PARTIDA
+9- CARGAR PARTIDA
+----
+animacion globo por milisegundos no frames
+que las mariposas para los numeros aleatorios llamen a un metodo del game que le de un metodo aleatorio
+LO QUE NO QUIERE ES NUMEROS ALEATORIOS PARA CADA MARIPOSA (GUARRERIA)
