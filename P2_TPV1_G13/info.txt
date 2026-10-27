@@ -1,0 +1,9 @@
+Integrantes del grupo:
+Leo Reyes Funk
+Lune Redondo Vaillo
+Funcionalidades:
+InfoBar con contador de flechas
+LoadLevel lee background color y puntaje de globos
+Cosas que no hemos llegado a hacer:
+InfoBar no le hemos puesto puntos que se pongan en pantalla del juego, se hace cout
+No hemos puesto goal para el nivel, se pasa de nivel si o si cuando se terminan las flechas
