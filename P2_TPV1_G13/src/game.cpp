@@ -4,12 +4,16 @@
 
 #include <SDL3_image/SDL_image.h>
 
-#include "texture.h"
-
-#include "vector2D.h"
 
 #include <random> // para generar valores aleatorios
-
+// Includes
+// Objetos
+#include "Bow.h"
+#include "Arrow.h"
+#include "Balloon.h"
+#include "InfoBar.h"
+#include "rectangle.h"
+#include "texture.h"
 using namespace std;
 
 // Constantes
@@ -88,9 +92,7 @@ Game::~Game()
 		delete texture;
 	}
 	delete bow; bow = nullptr;
-	delete infobar; infobar = nullptr;
-	for (Arrow* a : arrows) delete a;
-	for (Balloon* b : balloons) delete b;
+	for (GameObject* g : objects) { delete g; g = nullptr; }
 }
 
 void

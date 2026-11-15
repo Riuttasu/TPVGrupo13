@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Archivos de código fuente\Generica">
+      <UniqueIdentifier>{9ac66513-5acd-469c-85da-40a197d0d877}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\Generica">
+      <UniqueIdentifier>{29a14e7f-1718-432e-8b4e-6211ebf79aa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de código fuente\Objetos">
+      <UniqueIdentifier>{c90f43f3-a349-4508-a8a9-ed952811b1a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\Objetos">
+      <UniqueIdentifier>{059ef89a-312e-48d5-a730-7a27875240b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -27,17 +39,26 @@
     <ClCompile Include="texture.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="Balloon.cpp">
-      <Filter>Archivos de código fuente</Filter>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Archivos de código fuente\Generica</Filter>
+    </ClCompile>
+    <ClCompile Include="MobileObject.cpp">
+      <Filter>Archivos de código fuente\Generica</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneObject.cpp">
+      <Filter>Archivos de código fuente\Generica</Filter>
     </ClCompile>
     <ClCompile Include="Arrow.cpp">
-      <Filter>Archivos de código fuente</Filter>
+      <Filter>Archivos de código fuente\Objetos</Filter>
+    </ClCompile>
+    <ClCompile Include="Balloon.cpp">
+      <Filter>Archivos de código fuente\Objetos</Filter>
     </ClCompile>
     <ClCompile Include="Bow.cpp">
-      <Filter>Archivos de código fuente</Filter>
+      <Filter>Archivos de código fuente\Objetos</Filter>
     </ClCompile>
     <ClCompile Include="InfoBar.cpp">
-      <Filter>Archivos de código fuente</Filter>
+      <Filter>Archivos de código fuente\Objetos</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -53,17 +74,26 @@
     <ClInclude Include="vector2D.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Balloon.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="GameObject.h">
+      <Filter>Archivos de encabezado\Generica</Filter>
+    </ClInclude>
+    <ClInclude Include="MobileObject.h">
+      <Filter>Archivos de encabezado\Generica</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneObject.h">
+      <Filter>Archivos de encabezado\Generica</Filter>
     </ClInclude>
     <ClInclude Include="Arrow.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Archivos de encabezado\Objetos</Filter>
+    </ClInclude>
+    <ClInclude Include="Balloon.h">
+      <Filter>Archivos de encabezado\Objetos</Filter>
     </ClInclude>
     <ClInclude Include="Bow.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Archivos de encabezado\Objetos</Filter>
     </ClInclude>
     <ClInclude Include="InfoBar.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Archivos de encabezado\Objetos</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

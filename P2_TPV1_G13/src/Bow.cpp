@@ -1,6 +1,6 @@
 #include "Bow.h"
 Bow::Bow(Game* g, Rectangle dims, int arrows) :
-	game(g), body(dims), numArrows(arrows)
+	SceneObject(g,dims,texture), numArrows(arrows)
 {}
 void Bow::handleEvent(const SDL_Event& event)
 {
@@ -42,7 +42,7 @@ void Bow::update(float delta)
 	else if (body.getTopLeftCorner().getY()+body.getHeight() > game->WINDOW_HEIGHT)
 	body = Rectangle(Point2D<float>(body.getTopLeftCorner().getX(), game->WINDOW_HEIGHT - body.getHeight()), body.getWidth(), body.getHeight());
 }
-void Bow::render() const
+/*void Bow::render() const
 {
 	// Consigue la textura del game
 	Texture* texture = game->getTexture(Game::TextureName::BOW);
@@ -52,7 +52,7 @@ void Bow::render() const
 		// Los parametros extra y el operador para las diferentes texturas
 		texture->renderFrame(body.to_sdl(),0,strung ? 0 : 1);
 	}
-}
+}*/
 void Bow::Shoot()
 {
 	if (game)

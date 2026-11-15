@@ -1,23 +1,15 @@
 #pragma once
 #ifndef ARROW_H
-#include "game.h"
+#include "MobileObject.h"
 #include "rectangle.h"
-#include "texture.h"
 #include "vector2D.h"
 // Declaraciones anticipadas
 class Game; 
-class Arrow
+class Arrow : public MobileObject
 {
 private:
-	// Puntero al juego
-	Game* game;
-	// Cuerpo en el que va a ser renderizado
-	Rectangle body;
-	// Velocidad
-	Vector2D<float> vel;
+	int combo = 0; // Para sumar mas puntos
 public:
-	// Getters
-	Rectangle GetDims() const { return body; };
 	// Constructora
 	Arrow(Rectangle dims,  Game* g, Vector2D<float> velocity = Vector2D(0.3f, 0.0f));
 	// Logica

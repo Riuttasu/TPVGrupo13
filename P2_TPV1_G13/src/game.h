@@ -7,15 +7,13 @@
 #include <fstream>
 #include <vector>
 #include <format>
+#include "vector2D.h"
+#include "rectangle.h"
+#include "texture.h"
 // Objetos
-#include "Bow.h"
-#include "Arrow.h"
-#include "Balloon.h"
-#include "InfoBar.h"
-// #include "rectangle.h"
 
 // Declaraciones anticipadas
-class Texture;
+class GameObject;
 class Bow;
 class Arrow;
 class Balloon;
@@ -64,6 +62,7 @@ private:
 	int points = 0;
 	// Elementos del juego
 	Bow* bow = nullptr; // Arco
+	std::vector<GameObject*> objects;
 	std::vector<Arrow*> arrows; // Flechas
 	std::vector<Balloon*> balloons; // Globos
 	InfoBar* infobar = nullptr; // Barra de informacion para el jugador

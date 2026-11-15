@@ -1,32 +1,28 @@
 #pragma once
 #ifndef BOW_H
-#include "rectangle.h"
-#include "texture.h"
 #include "game.h"
+#include "SceneObject.h"
+#include "rectangle.h"
 #include <SDL3/SDL.h>
 // Declaraciones anticipadas
 class Game;
-class Bow
+class Bow : public SceneObject
 {
 private:
-	Game* game; // Puntero al juego para conseguir texturas 
-	int dirY = 0; // Direccion de movimiento, 1 abajo, -1 arriba, 0 quieto
-	Rectangle body; // Rectangulo donde se va a renderizar
 	float vel = 1; // Velocidad de movimiento
+	int dirY = 0; // Direccion de movimiento, 1 abajo, -1 arriba, 0 quieto
 	int numArrows = 5; // Numero de flechas
 	bool strung = false; // Si esta armado o no
 public:
 	// Getters
 	int GetArrowNum() const { return numArrows; };
-	Rectangle GetDims() const { return body; };
 	// Setters
 	void SetArrowNum(int n) { numArrows = n; };
 	// Constructora
 	Bow(Game* game, Rectangle dims, int arrows);
 	// Logica
 	void handleEvent(const SDL_Event& event);
-	void update(float delta);
-	void render() const;
+	void update(float delta) override;
 	// Disparo
 	void Shoot();
 };

@@ -40,6 +40,7 @@ bool Balloon::update(float delta){
 }
 
 // detector de colisiones
+/*
 bool Balloon::Hit(const Rectangle& obj)
 {
 	if (!exploded && obj.hasIntersection(body)){
@@ -48,3 +49,4 @@ bool Balloon::Hit(const Rectangle& obj)
 	}
 	return false;
 }
+*/

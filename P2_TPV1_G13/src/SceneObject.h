@@ -3,14 +3,20 @@
 #define SCENEOBJECT_H
 // Includes
 #include "GameObject.h"
-#include "vector2D.h"
+#include "rectangle.h"
+// Declaraciones anticipadas
+class Game;
+class Texture;
 // Clase principal
 class SceneObject: public GameObject
 {
 protected:
-	Vector2D<float> speed;
+	Rectangle body;
+	Texture* texture;
 public:
-	void update() override;
+	SceneObject(Game* g, Rectangle b, Texture* t);
+	virtual ~SceneObject() = default;
+	virtual bool hit(const Rectangle& c);
 };
 #endif // !SCENEOBJECT_H
 
