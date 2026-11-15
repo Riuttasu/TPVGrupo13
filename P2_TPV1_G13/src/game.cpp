@@ -104,9 +104,16 @@ Game::update(float delta)
 {
 	// Delegacion de update a objetos
 	bow->update(delta);
-	for (SceneObject* o : objects) if (o->update(delta)) delete o;
+	// Iterador para ir borrando los objetos si devuelven false
+	for (auto it = objects.begin(); it != objects.end();) {
+		if (!(*it)->update(delta)) {
+			delete* it; // Destrucción del objeto
+			it = objects.erase(it); // Se le quita de la lista
+		}
+		else ++it; // Si no se tiene que borrar se avanza
+	}
 	// generacion de globos
-
+	addBalloonLogic(delta);
 }
 void
 Game::addBalloonLogic(float delta)

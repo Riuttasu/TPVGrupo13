@@ -45,17 +45,14 @@ bool Bow::update(float delta)
 	// No se destruye en ningun caso durante el juego
 	return false;
 }
-/*void Bow::render() const
+void Bow::render() const
 {
-	// Consigue la textura del game
-	Texture* texture = game->getTexture(Game::TextureName::BOW);
-	// Si la encuentra la hace el render dentro de el cuadrado de sus dimensiones
 	if (texture)
 	{
 		// Los parametros extra y el operador para las diferentes texturas
 		texture->renderFrame(body.to_sdl(),0,strung ? 0 : 1);
 	}
-}*/
+}
 void Bow::Shoot()
 {
 	if (game)

@@ -23,6 +23,7 @@ public:
 	// Logica
 	void handleEvent(const SDL_Event& event);
 	bool update(float delta) override;
+	void render() const override;
 	// Disparo
 	void Shoot();
 };
