@@ -14,15 +14,15 @@ private:
 	int numArrows = 5; // Numero de flechas
 	bool strung = false; // Si esta armado o no
 public:
+	// Constructora
+	Bow(Game* game, Rectangle b, int a);
 	// Getters
 	int GetArrowNum() const { return numArrows; };
 	// Setters
 	void SetArrowNum(int n) { numArrows = n; };
-	// Constructora
-	Bow(Game* game, Rectangle dims, int arrows);
 	// Logica
 	void handleEvent(const SDL_Event& event);
-	void update(float delta) override;
+	bool update(float delta) override;
 	// Disparo
 	void Shoot();
 };

@@ -5,8 +5,9 @@
 #include <SDL3/SDL.h>
 #include <array>
 #include <fstream>
-#include <vector>
+#include <list>
 #include <format>
+#include <random> // para generar valores aleatorios
 #include "vector2D.h"
 #include "rectangle.h"
 #include "texture.h"
@@ -14,6 +15,7 @@
 
 // Declaraciones anticipadas
 class GameObject;
+class SceneObject;
 class Bow;
 class Arrow;
 class Balloon;
@@ -32,10 +34,9 @@ public:
 	static constexpr int WINDOW_WIDTH = 800;
 	static constexpr int WINDOW_HEIGHT = 600;
 	// Tamaño de objetos
-	static constexpr int ARROW_WIDTH = 45;
-	static constexpr int ARROW_HEIGHT = 22;
-	static constexpr int BOW_WIDTH = 50;
-	static constexpr int BOW_HEIGHT = 50;
+	static constexpr int ARROW_WIDTH = 45, ARROW_HEIGHT = 22;
+	static constexpr int BOW_WIDTH = 50, BOW_HEIGHT = 50;
+	static constexpr int BALLOON_WIDTH = 60, BALLOON_HEIGHT = 90;
 	//
 	enum TextureName
 	{
@@ -49,23 +50,25 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	std::array<Texture*, NUM_TEXTURES> textures;
-
+	// Bucle principal
 	void render() const;
 	void update(float delta);
 	void handleEvents();
+	// spawn de globos
+	void addBalloonLogic(float delta);
 	// bools que rompen bucle principal
 	bool exit; // Salida mediante cerrar ventana
 	bool goal; // Salida mediante terminar objetivo/flechas
 	// Manejo de tiempo
 	uint64_t startTime, frameTime = 0;
+	// Generador de aleatorios
+	std::mt19937_64 randomGen; 
 	// Puntos
 	int points = 0;
 	// Elementos del juego
 	Bow* bow = nullptr; // Arco
-	std::vector<GameObject*> objects;
-	std::vector<Arrow*> arrows; // Flechas
-	std::vector<Balloon*> balloons; // Globos
-	InfoBar* infobar = nullptr; // Barra de informacion para el jugador
+	GameObject* infobar = nullptr;
+	std::list<SceneObject*> objects; // Lista polimorfica de objetos
 	// Variables cambiadas por archivo
 	SDL_Color bgColor = SDL_Color(0, 0, 0, 1); // Color del fondo de la ventana
 	int maxArrows = 5; // Numero maximo de flechas
@@ -82,7 +85,7 @@ public:
 	// Ejecuta el bucle principal del juego
 	void run();
 	// anade una flecha a la escena en la posicion dada como esquina superior izquierda
-	void AddArrow(Point2D<float> topleftcorn);
+	void AddObject(SceneObject* obj);
 	// Comprueba si hay algún objeto colocado en ese rectángulo
 	bool checkCollision(const Rectangle& rect) ;
 	// Carga desde archivo

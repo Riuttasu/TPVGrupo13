@@ -13,9 +13,9 @@ class MobileObject : public SceneObject
 protected:
 	Vector2D<float> speed;
 public:
-	MobileObject(Game* g,Rectangle b, Texture* t, float v);
-	virtual ~MobileObject() = default;
-	void update(float delta) override;
+	MobileObject(Game* g,Rectangle b, Texture* t, Vector2D<float> s);
+	virtual ~MobileObject() = default; // Destructora virtual
+	bool update(float delta) override;
 };
 
 #endif // !MOBILEOBJECT_H

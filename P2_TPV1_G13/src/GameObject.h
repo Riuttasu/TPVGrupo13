@@ -14,7 +14,7 @@ public:
 	GameObject(Game* g);
 	virtual ~GameObject() = default; // Destructora virtual importante
 	virtual void render() const;
-	virtual void update(float delta) = 0; // Funcion puramente virtual
+	virtual bool update(float delta) = 0; // Funcion puramente virtual
 };
 #endif // !GAMEOBJECT_H
 

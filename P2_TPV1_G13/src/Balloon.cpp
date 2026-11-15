@@ -2,11 +2,10 @@
 
 
 // constructor del globo
-Balloon::Balloon(float posX, float posY, int color, float velY, Texture* texture){
-	this->body = Rectangle(Point2D<float>(posX, posY), 60, 90);
-	this->color = color;
-	this->vel = Vector2D<float>(0, -velY); // negativo ya que el globo sube
-	this->texture = texture;
+Balloon::Balloon(Game* g, Rectangle b, Vector2D<float> velY, int color)
+	: MobileObject(g,b,g->getTexture(Game::TextureName::BALLOON), velY), color(color)
+{
+	if (color < 0 || color > 6) color = 1; // Por si se introduce un color fuera de rango
 }
 
 // render del globo
@@ -18,6 +17,8 @@ void Balloon::render() const{
 
 // update para el movimiento del globo
 bool Balloon::update(float delta){
+	// Movimiento
+	MobileObject::update(delta);
 	// si el globo se sale de la pantalla
 	if (body.getTopLeftCorner().getY() + body.getHeight() < 0) {
 		return false; // el globo ha salido de la pantalla
@@ -32,11 +33,7 @@ bool Balloon::update(float delta){
 			return false; // el globo ha terminado la animación de la explosión
 		}
 	}
-	else {
-		// actualiza la posición del globo en base al deltaTime
-		body.move(vel * delta);
-		return true;
-	}
+	else return true;
 }
 
 // detector de colisiones

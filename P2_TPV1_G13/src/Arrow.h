@@ -11,10 +11,9 @@ private:
 	int combo = 0; // Para sumar mas puntos
 public:
 	// Constructora
-	Arrow(Rectangle dims,  Game* g, Vector2D<float> velocity = Vector2D(0.3f, 0.0f));
+	Arrow(Game* g, Rectangle b, Vector2D<float> s = Vector2D(0.3f, 0.0f));
 	// Logica
-	bool update(float delta);
-	void render() const;
+	bool update(float delta) override;
 };
 #define ARROW_H
 #endif // !ARROW_H

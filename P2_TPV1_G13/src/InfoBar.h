@@ -1,17 +1,17 @@
 #pragma once
 #ifndef INFOBAR_H
-#include "game.h"
+#include "GameObject.h"
 // Declaraciones anticipadas
 class Game;
 // Clase principal
-class InfoBar
+class InfoBar : public GameObject
 {
 private:
-	const Game* game; // Puntero al game para conseguir dimensiones y estadisticas
 	Rectangle arrows; // Rectangulo de la primera flecha
 public:
-	InfoBar(const Game* game);
-	void render();
+	InfoBar(Game* game);
+	void render() const override;
+	bool update(float delta) override;
 };
 #endif // !INFOBAR_H
 

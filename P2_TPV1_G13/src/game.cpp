@@ -1,12 +1,8 @@
 #include "game.h"
-
-#include <string>
-
-#include <SDL3_image/SDL_image.h>
-
-
-#include <random> // para generar valores aleatorios
+using namespace std;
 // Includes
+#include <string>
+#include <SDL3_image/SDL_image.h> // SDL
 // Objetos
 #include "Bow.h"
 #include "Arrow.h"
@@ -14,8 +10,6 @@
 #include "InfoBar.h"
 #include "rectangle.h"
 #include "texture.h"
-using namespace std;
-
 // Constantes
 constexpr const char* const WINDOW_TITLE = "Bow & Arrow 1.0";
 constexpr const char* IMAGE_ROOT = "../assets/images/";
@@ -37,11 +31,9 @@ constexpr array<TextureSpec, Game::NUM_TEXTURES> textureList{
 };
 
 // generador de números aleatorios
-random_device semilla; // número aleatorio del hardware
-mt19937_64 randomGen(semilla()); // generador de números aleatorios
 
 Game::Game()
-	: exit(false), goal(false), points(0)
+	: exit(false), goal(false), points(0), randomGen(random_device{}())
 {
 	// Lee archivo para inicializar valores de archivo si existe el nivel 1
 	loadLevel(1);
@@ -86,8 +78,8 @@ Game::Game()
 Game::~Game()
 {
 	//  liberar la memoria reservada por la clase
-	window = nullptr;
-	renderer = nullptr;
+	delete window; window = nullptr;
+	delete renderer; renderer = nullptr;
 	for (auto& texture : textures) {
 		delete texture;
 	}
@@ -102,8 +94,7 @@ Game::render() const
 	// Delegacion de render a objetos
 	bow->render();
 	infobar->render();
-	for (Arrow* a : arrows) a->render();
-	for (Balloon* b : balloons) b->render();
+	for (SceneObject* o : objects) o->render();
 	//
 	SDL_RenderPresent(renderer);
 }
@@ -113,82 +104,51 @@ Game::update(float delta)
 {
 	// Delegacion de update a objetos
 	bow->update(delta);
+	for (SceneObject* o : objects) if (o->update(delta)) delete o;
+	// generacion de globos
 
-	for (int i = 0; i < arrows.size(); i++) {
-		if (!arrows[i]->update(delta)) {
-			delete arrows[i];
-			arrows.erase(arrows.begin() + i);
-		}
-	}
-
-	for (int i = 0; i < balloons.size(); i++) {
-		if (!balloons[i]->update(delta)) {
-			delete balloons[i];
-			balloons.erase(balloons.begin() + i);
-		}
-	}
-
-	// generacion de globos a velocidad constante
-	static float timeLastBalloon = 0;
+}
+void
+Game::addBalloonLogic(float delta)
+{
+	static float timeLastBalloon = 0; // Static hace que mantenga el valor entre las llamadas
 	timeLastBalloon += delta;
 	if (timeLastBalloon >= balloonDelay) {
-		timeLastBalloon = 0;
+		timeLastBalloon = 0; // Reinicia el timer
+		// Variables random del globo a spawnear
 		int posX = uniform_int_distribution<int>(WINDOW_WIDTH / 3, WINDOW_WIDTH - 100)(randomGen); // posicion aleatoria entre 1/3 y el fin (con margen)
 		int color = uniform_int_distribution<int>(0, 6)(randomGen); // color aleatorio entre 0 y 6
-		float velY = uniform_real_distribution<float>(0.076f, 0.101f)(randomGen); // velocidad aleatoria entre 8 y 10
-		balloons.push_back(new Balloon(posX, WINDOW_HEIGHT, color, velY, getTexture(TextureName::BALLOON)));
+		Vector2D<float> velY(0,-uniform_real_distribution<float>(0.076f, 0.101f)(randomGen)); // velocidad aleatoria entre 8 y 10
+		// Mete el globo en el juego
+		AddObject(new Balloon(this,Rectangle(Point2D<float>(posX,WINDOW_HEIGHT),BALLOON_WIDTH,BALLOON_HEIGHT),velY,color));
 	}
 }
-
 void
 Game::run()
 {
 	int level = 1;
 	// bucle principal
 	while (!exit && !goal) {
-		while (!exit && !goal)
-		{
-			// Start del frame
-			startTime = SDL_GetTicks();
-			// Manejo de eventos
-			handleEvents();
-			// Update con el tiempo por frame que se busca
-			update(FRAME_PERIOD);
-			// Render
-			render();
-			// Se calcula el tiempo del frame desde el start y si se ha llegado al frame period que queriamos
-			frameTime = SDL_GetTicks() - startTime;
-			if (frameTime < FRAME_PERIOD)
-				// Si no hace delay por lo que quede para el frame period
-				SDL_Delay(FRAME_PERIOD - frameTime);
-			// Condicion de game over
-			// 0 flechas, empty de arrows es para dejar que la ultima flecha haga su trayectoria
-			if (bow->GetArrowNum() <= 0 && arrows.empty()) goal = true;
-		}
-		if (goal) {
-			cout << std::format("Completaste el nivel {} con {} con puntos :3, intentando avanzar al nivel {}", level, points, level + 1) << endl;
-			++level;
-			if (fstream(LEVEL_ROOT + to_string(level) + ".txt"))
-			{
-				loadLevel(level);
-				goal = false;
-				points = 0;
-				bow->SetArrowNum(maxArrows);
-			}
-			else
-			{
-				cout << std::format("Nivel {} no encontrado en la lista, no queda juego :d", level) << endl;
-			}
+		startTime = SDL_GetTicks();
+		// Manejo de eventos
+		handleEvents();
+		// Update con el tiempo por frame que se busca
+		update(FRAME_PERIOD);
+		// Render
+		render();
+		// Se calcula el tiempo del frame desde el start y si se ha llegado al frame period que queriamos
+		frameTime = SDL_GetTicks() - startTime;
+		if (frameTime < FRAME_PERIOD){
+			// Si no hace delay por lo que quede para el frame period
+			SDL_Delay(FRAME_PERIOD - frameTime);
 		}
 	}
-	if (exit) { cout << "Juego abortado" << endl; }
 }
 
 void
 Game::handleEvents()
 {
 	SDL_Event event;
-
 	// quit lo maneja el juego
 	while (SDL_PollEvent(&event)) {
 		if (event.type == SDL_EVENT_QUIT)
@@ -201,9 +161,9 @@ Game::handleEvents()
 	}
 }
 void
-Game::AddArrow(Point2D<float> topleftcorn)
+Game::AddObject(SceneObject* obj)
 {
-	arrows.push_back(new Arrow(Rectangle(topleftcorn,ARROW_WIDTH , ARROW_HEIGHT), this));
+	objects.push_back(obj);
 }
 int
 Game::getArrows() const
@@ -215,9 +175,8 @@ bool
 Game::checkCollision(const Rectangle& rect)
 {
 	// comprueba si hay algún globo que colisione con el rectángulo dado
-	for (const auto& balloon : balloons) {
-		if (balloon->Hit(rect)) {
-			points += balloonPoints;
+	for (SceneObject* o : objects){
+		if (o->hit(rect)) {
 			return true;
 		}
 	}

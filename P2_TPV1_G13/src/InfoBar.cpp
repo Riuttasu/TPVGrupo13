@@ -1,11 +1,11 @@
 #include "InfoBar.h"
 
-InfoBar::InfoBar(const Game* g) : game(g)
+InfoBar::InfoBar(Game* g) : GameObject(g)
 { 
 	arrows = Rectangle(Point2D<float>(game->WINDOW_WIDTH / 15,game->WINDOW_HEIGHT/30), 
 		game->ARROW_WIDTH, game->ARROW_HEIGHT/2);
 }
-void InfoBar::render()
+void InfoBar::render() const 
 {
 	Texture* arrowTexture = game->getTexture(Game::TextureName::ARROW);
 	if (arrowTexture)
@@ -20,3 +20,4 @@ void InfoBar::render()
 		}
 	}
 }
+bool InfoBar::update(float delta) { return false; }

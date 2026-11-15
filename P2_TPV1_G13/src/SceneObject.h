@@ -15,7 +15,8 @@ protected:
 	Texture* texture;
 public:
 	SceneObject(Game* g, Rectangle b, Texture* t);
-	virtual ~SceneObject() = default;
+	virtual ~SceneObject() = default; // Destructora virtual
+	void render() const override;
 	virtual bool hit(const Rectangle& c);
 };
 #endif // !SCENEOBJECT_H
