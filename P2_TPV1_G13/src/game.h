@@ -74,6 +74,8 @@ private:
 	int maxArrows = 5; // Numero maximo de flechas
 	int balloonDelay = 1000; // Tiempo entre globos
 	int balloonPoints = 10; // Numero de puntos por globo
+	float balloonSpeed = 0.3f; // Velocidad globos
+	int butterflies = 0;
 public:
 	Game();
 	~Game();
@@ -82,12 +84,14 @@ public:
 	Texture* getTexture(TextureName name) const;
 	// Obtiene el numero de flechas
 	int getArrows() const;
+	// Añade puntos
+	void addPoints(int delta);
 	// Ejecuta el bucle principal del juego
 	void run();
 	// anade una flecha a la escena en la posicion dada como esquina superior izquierda
 	void AddObject(SceneObject* obj);
 	// Comprueba si hay algún objeto colocado en ese rectángulo
-	bool checkCollision(const Rectangle& rect) ;
+	SceneObject* checkCollision(const Rectangle& rect) ;
 	// Carga desde archivo
 	void loadLevel(int levelNum);
 };

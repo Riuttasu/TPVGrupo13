@@ -125,7 +125,8 @@ Game::addBalloonLogic(float delta)
 		// Variables random del globo a spawnear
 		int posX = uniform_int_distribution<int>(WINDOW_WIDTH / 3, WINDOW_WIDTH - 100)(randomGen); // posicion aleatoria entre 1/3 y el fin (con margen)
 		int color = uniform_int_distribution<int>(0, 6)(randomGen); // color aleatorio entre 0 y 6
-		Vector2D<float> velY(0,-uniform_real_distribution<float>(0.076f, 0.101f)(randomGen)); // velocidad aleatoria entre 8 y 10
+		Vector2D<float> velY(0, balloonSpeed); // Velocidad no aleatoria pero dada por archivo
+		//Vector2D<float> velY(0,-uniform_real_distribution<float>(0.076f, 0.101f)(randomGen)); // velocidad aleatoria
 		// Mete el globo en el juego
 		AddObject(new Balloon(this,Rectangle(Point2D<float>(posX,WINDOW_HEIGHT),BALLOON_WIDTH,BALLOON_HEIGHT),velY,color));
 	}
@@ -178,22 +179,27 @@ Game::getArrows() const
 	if (bow) return bow->GetArrowNum();
 	else return -1;
 }
-bool
+void
+Game::addPoints(int delta)
+{
+	points += delta;
+}
+SceneObject*
 Game::checkCollision(const Rectangle& rect)
 {
-	// comprueba si hay algún globo que colisione con el rectángulo dado
+	// comprueba si hay algún objeto que colisione con el rectangulo dado
 	for (SceneObject* o : objects){
 		if (o->hit(rect)) {
-			return true;
+			return o; // Devuelve un puntero al objeto
 		}
 	}
-	return false; // si no hay colisiones
+	return nullptr; // si no hay colisiones
 }
 void
 Game::loadLevel(int levelNum)
 {
 	// Busca un archivo con ese nombre en LEVEL_ROOT, si no hay tira exception
-	fstream level(LEVEL_ROOT + to_string(levelNum) + ".txt");
+	ifstream level(LEVEL_ROOT + to_string(levelNum) + ".txt");
 	if (!level) throw runtime_error(std::format("No existe archivo con el nombre {}.txt para cargar nivel en {}",levelNum, LEVEL_ROOT));
 	// Abre la lectura de archivo
 	istream& in(level);
@@ -208,40 +214,16 @@ Game::loadLevel(int levelNum)
 		// primer argumento lo he encontrao en cplusplus, dudo que algun animal escriba un comentario de mas de mil caracteres tho
 		if (line[0] == '#') { in.ignore(numeric_limits<streamsize>::max(), '\n'); }
 		// palabras clave
-		else if (line == "arrows") {
-			in >> arrows;
-		}
-		else if (line == "baldelay") {
-			in >> baldelay;
-		}
-		else if (line == "bgcolor") {
-			in >> r >> g >> b;
-		}
-		else if (line == "balpoints") {
-			in >> balloonPoints;
-		}
+		else if (line == "arrows") in >> arrows; // flechas
+		else if (line == "baldelay") in >> baldelay; // tiempo entre globos
+		else if (line == "bgcolor") in >> r >> g >> b; // RGB fondo
+		else if (line == "balpoints") in >> balloonPoints; // puntos por globo
+		else if (line == "balspeed") in >> balloonSpeed; // velocidad de globos
+		else if (line == "butterflies") in >> butterflies; // numero de mariposas
 		// Si no es ninguna de ellas, ignora
 		else in.ignore(numeric_limits<streamsize>::max(), '\n');
 		// si lee una palabra clave que se reconoce y no parsea bien se devuelve exception
 		// aqui queria poner un format con linea pero luego recorde que esto no es c# y al buscar me parecia algo mas complicado lo pondre en el txt
 		if (in.fail()) throw runtime_error("Lectura de archivo fallada, no se ha podido convertir propiedad por mala conversion");
-	}
-	// Pone las variables configurables que se han modificado, checkea si son valores validos despues ( si es -1 ajo y agua ) 
-	if (arrows != -1) {
-		if (arrows < -1) throw runtime_error(format("Lectura de archivo fallada, propiedad con valor fuera de rango, {}, propiedad numero flechas", arrows));
-		maxArrows = arrows;
-	}
-	if (baldelay != -1) {
-		if (baldelay < -1) throw runtime_error(format("Lectura de archivo fallada, propiedad con valor fuera de rango, {}, propiedad delay globos", baldelay));
-		balloonDelay = baldelay;
-	}
-	if (r != -1 || g != -1 || b != -1) {
-		if (r < -1 || r > 255 || g < -1 || g > 255 || b < -1 || b > 255) 
-			throw runtime_error(format("Lectura de archivo fallada, propiedad con valor fuera de rango, ({},{},{}), propiedad color fondo", r, g,b));
-		bgColor = SDL_Color(r,g,b,1);
-	}
-	if (balpoints != -1) {
-		if (balpoints < -1) throw runtime_error(format("Lectura de archivo fallada, propiedad con valor fuera de rango, {}, propiedad puntos globos", balpoints));
-		balloonPoints = balpoints;
 	}
 }
