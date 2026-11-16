@@ -34,6 +34,9 @@ public:
 	// detector de colisiones
 	bool hit(const Rectangle& obj) override;
 
+	// clam auxiliar
+	void clamp();
+
 	// Para guardar en archivo
 	void Save(std::ostream& out) const override;
 };

@@ -38,9 +38,7 @@ bool Butterfly::update(float delta) {
 			}
 		}
 		// si la mariposa llega a arriba o abajo, cambia de dirección
-		if (body.getTopLeftCorner().getY() < 0 || body.getTopLeftCorner().getY() + body.getHeight() > game->WINDOW_HEIGHT) {
-			this->speed = Vector2D<float>(speed.getX(), -speed.getY());
-		}
+		clamp();
 		// de vez en cuando, la mariposa cambia de dirección aleatoriamente
 		randomTimer += delta;
 		if (randomTimer >= 5000) { // cada 5s
@@ -59,6 +57,17 @@ bool Butterfly::update(float delta) {
 		}
 	}
 	return true;
+}
+
+void Butterfly::clamp() {
+	// vertical 
+	if (body.getTopLeftCorner().getY() < 0 || body.getTopLeftCorner().getY() + body.getHeight() > game->WINDOW_HEIGHT) {
+		this->speed = Vector2D<float>(speed.getX(), -speed.getY());
+	}
+	// horizontal
+	if (body.getTopLeftCorner().getX() < 150 || body.getTopLeftCorner().getX() + body.getWidth() > game->WINDOW_WIDTH) {
+		this->speed = Vector2D<float>(-speed.getX(), speed.getY());
+	}
 }
 
 bool Butterfly::hit(const Rectangle& obj)
