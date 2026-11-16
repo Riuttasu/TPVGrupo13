@@ -28,6 +28,7 @@ constexpr array<TextureSpec, Game::NUM_TEXTURES> textureList{
 	TextureSpec{"bow.png", 1, 2},
 	{"arrow.png"},
 	TextureSpec{"balloons.png", 7, 6},
+	TextureSpec{"butterfly.png", 4, 10}
 };
 
 // generador de números aleatorios
@@ -125,10 +126,10 @@ Game::addBalloonLogic(float delta)
 		// Variables random del globo a spawnear
 		int posX = uniform_int_distribution<int>(WINDOW_WIDTH / 3, WINDOW_WIDTH - 100)(randomGen); // posicion aleatoria entre 1/3 y el fin (con margen)
 		int color = uniform_int_distribution<int>(0, 6)(randomGen); // color aleatorio entre 0 y 6
-		Vector2D<float> velY(0, balloonSpeed); // Velocidad no aleatoria pero dada por archivo
+		Vector2D<float> velY(0, -balloonSpeed); // Velocidad no aleatoria pero dada por archivo
 		//Vector2D<float> velY(0,-uniform_real_distribution<float>(0.076f, 0.101f)(randomGen)); // velocidad aleatoria
 		// Mete el globo en el juego
-		AddObject(new Balloon(this,Rectangle(Point2D<float>(posX,WINDOW_HEIGHT),BALLOON_WIDTH,BALLOON_HEIGHT),velY,color));
+		AddObject(new Balloon(this,Rectangle(Point2D<float>(posX,WINDOW_HEIGHT),BALLOON_WIDTH,BALLOON_HEIGHT), velY,color));
 	}
 }
 void

@@ -43,6 +43,7 @@ public:
 		BOW = 0,
 		ARROW,
 		BALLOON,
+		BUTTERFLY,
 		NUM_TEXTURES
 	};
 

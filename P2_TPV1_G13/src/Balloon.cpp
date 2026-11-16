@@ -25,12 +25,13 @@ bool Balloon::update(float delta){
 	}
 	// si el globo es estallado por una flecha y aún no se ha terminado la animación de la explosión
 	else if (exploded) {
-		// el globo no se mueve
-		if (animFrame < 5) {
-			animFrame++; // avanza la animación de la explosión
-		}
-		else {
-			return false; // el globo ha terminado la animación de la explosión
+		// se cuenta el tiempo
+		accumulatedTime += delta;
+		// si ha pasado el tiempo de un frame
+		if (accumulatedTime >= animationTime / 5) { 
+			accumulatedTime = 0; // se reinicia el contador
+			if (animFrame < 5) animFrame++; // si no se ha llegado al ultimo frame se avanza
+			else return false; // si se ha llegado al ultimo frame se destruye
 		}
 	}
 	else return true;
