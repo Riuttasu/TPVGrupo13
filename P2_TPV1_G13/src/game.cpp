@@ -40,7 +40,7 @@ constexpr array<TextureSpec, Game::NUM_TEXTURES> textureList{
 // generador de números aleatorios
 
 Game::Game()
-	: exit(false), points(0), level(1), randomGen(random_device{}())
+	: exit(false), level(1), points(0),  randomGen(random_device{}())
 {
 	// Lee archivo para inicializar valores de archivo si existe el nivel 1
 	loadLevel(level);
@@ -202,7 +202,7 @@ Game::spawnButterflies()
 		Vector2D<float> vel(uniform_real_distribution<float>(-0.03,0.03)(randomGen),uniform_real_distribution<float>(-0.03, 0.03)(randomGen));
 		int type = uniform_int_distribution<int>(0, 4)(randomGen);
 		// Añade la mariposa
-		AddObject(new Butterfly(this, Rectangle(pos, BUTTERFLY_WIDTH, BUTTERFLY_HEIGHT), vel, 3));
+		AddObject(new Butterfly(this, Rectangle(pos, BUTTERFLY_WIDTH, BUTTERFLY_HEIGHT), vel, type));
 	}
 }
 int
