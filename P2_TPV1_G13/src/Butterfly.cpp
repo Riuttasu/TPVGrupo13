@@ -16,29 +16,37 @@ void Butterfly::render() const {
 
 // update de la mariposa
 bool Butterfly::update(float delta) {
-	// actúa normalmente si no ha sido golpeada
-	if (!shot) {
+	if (!shot) { // actúa normalmente si no ha sido golpeada
 		// movimiento
 		MobileObject::update(delta);
 		// animación de vuelo
 		accumulatedTime += delta; // se cuenta el tiempo
 		if (accumulatedTime >= animationTime / 10) { // si ha pasado el tiempo de un frame
 			accumulatedTime = 0; // se reinicia el contador
-			if (animFrame < 9) animFrame++; // si no se ha llegado al ultimo frame se avanza
-			else animFrame = 0; // si se ha llegado al ultimo frame se reinicia
+			if (animFrame == 0 || animFrame == 9) {
+				frameChange = -frameChange; // si se ha llegado al ultimo frame se invierte la dirección de la animación
+				animFrame += frameChange; // se avanza en la nueva dirección
+			}
+			else {
+				animFrame += frameChange; // si no se ha llegado al ultimo frame se avanza
+			}
 		}
 		// si la mariposa llega a arriba o abajo, cambia de dirección
-		if (body.getTopLeftCorner().getY() + body.getHeight() < 0 || body.getTopLeftCorner().getY() > game->WINDOW_HEIGHT) {
+		if (body.getTopLeftCorner().getY() < 0 || body.getTopLeftCorner().getY() + body.getHeight() > game->WINDOW_HEIGHT) {
 			this->speed = Vector2D<float>(speed.getX(), -speed.getY());
 		}
 		// de vez en cuando, la mariposa cambia de dirección aleatoriamente
-		if (game->randomInt(0, 100) < 2) { // 2% de probabilidad por frame
-			this->speed = Vector2D<float>(speed.getX(), -speed.getY());
+		randomTimer += delta;
+		if (randomTimer >= 5000) { // cada 5s
+			randomTimer = 0;
+			if (game->randomInt(0, 100) < 40) { // 40% de probabilidad cada 5s
+				this->speed = Vector2D<float>(speed.getX(), -speed.getY());
+			}
 		}
 	}
 	else { // cuando ha sido golpeada, cae hasta salir de la pantalla
-		// movimiento
-		MobileObject::update(delta);
+		this->speed = Vector2D<float>(0, 0.2f); // se asegura que la mariposa caiga hacia abajo
+		MobileObject::update(delta); // movimiento
 		// si la mariposa se sale de la pantalla
 		if (body.getTopLeftCorner().getY() > game->WINDOW_HEIGHT) {
 			return false; // la mariposa ha salido de la pantalla

@@ -10,6 +10,7 @@ using namespace std;
 #include "Bow.h"
 #include "Arrow.h"
 #include "Balloon.h"
+#include "Butterfly.h"
 #include "InfoBar.h"
 #include "rectangle.h"
 #include "texture.h"
@@ -74,6 +75,7 @@ Game::Game()
 	// creacion de los objetos del juego
 	bow = new Bow(this, Rectangle(Point2D<float>(WINDOW_WIDTH / 15, WINDOW_HEIGHT / 2), BOW_WIDTH, BOW_HEIGHT), maxArrows);
 	AddObject(bow); // Lo añade a la lista de objetos
+	AddObject(new Butterfly(this, Rectangle(Point2D<float>(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 60, 60), Vector2D<float>(0, -0.08f), 3));
 	infobar = new InfoBar(this); // Infobar es un gameobject va externo a la lista
 }
 

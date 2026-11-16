@@ -16,7 +16,9 @@ private:
 	bool shot = false; // si ha sido golpeada caerá
 	const int animationTime = 1000; // tiempo de la animación de vuelo, en milisegundos
 	int animFrame = 0; // para la animación de vuelo
+	int frameChange = -1; // positivo o negativo, para que la animación vaya hacia adelante o hacia atrás
 	float accumulatedTime = 0; // tiempo que ha pasado para la animación de vuelo
+	float randomTimer = 0; // tiempo en el que puede cambiar de dirección
 public:
 	//constructor
 	Butterfly(Game* g, Rectangle b, Vector2D<float> velY, int type);
