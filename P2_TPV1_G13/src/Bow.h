@@ -16,6 +16,7 @@ private:
 public:
 	// Constructora
 	Bow(Game* game, Rectangle b, int a);
+	Bow(Game* g, std::istream& in);
 	// Getters
 	int GetArrowNum() const { return numArrows; };
 	// Setters
@@ -26,6 +27,8 @@ public:
 	void render() const override;
 	// Disparo
 	void Shoot();
+	// Para guardar en archivo
+	void Save(std::ostream& out) const override;
 };
 #define BOW_H
 #endif // !BOW_H

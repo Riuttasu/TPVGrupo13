@@ -19,7 +19,7 @@ private:
 public:
 	// constructor
 	Balloon(Game* g, Rectangle b, Vector2D<float> velY, int color);
-
+	Balloon(Game* g, std::istream& in);
 	// no hay que hacer destructor, xq no hay memoria dinámica
 
 	// renderiza el globo en pantalla
@@ -30,6 +30,8 @@ public:
 
 	// detector de colisiones
 	bool hit(const Rectangle& obj) override;
+
+	void Save(std::ostream& out) const override; 
 };
 #endif // !BALLOON_H
 

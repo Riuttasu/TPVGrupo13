@@ -1,8 +1,14 @@
 #include "Arrow.h"
 Arrow::Arrow(Game* g, Rectangle b, Vector2D<float> s) :
 	MobileObject(g, b, g->getTexture(Game::TextureName::ARROW), s)
+{}
+Arrow::Arrow(Game* g, std::istream& in)
+	: MobileObject(g,in,g->getTexture(Game::TextureName::ARROW))
 {
-};
+	int c;
+	if (!(in >> c)) throw "Error al leer parámetros";
+	combo = c;
+}
 bool Arrow::update(float delta)
 {
 	// Movimiento
@@ -13,4 +19,11 @@ bool Arrow::update(float delta)
 	game->checkCollision(tip);
 	// Si se sale por la izquierda de la pantalla devuelve true para que el game la destruya
 	return (body.getTopLeftCorner().getX() < game->WINDOW_WIDTH);
+}
+
+void Arrow::Save(std::ostream& out) const
+{
+	out << "Arrow ";
+	MobileObject::Save(out); 
+	out << combo << " ";
 }

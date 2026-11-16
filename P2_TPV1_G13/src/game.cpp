@@ -2,6 +2,9 @@
 using namespace std;
 // Includes
 #include <string>
+#include <sstream>
+#include <algorithm>
+#include "GameErrors.h"
 #include <SDL3_image/SDL_image.h> // SDL
 // Objetos
 #include "Bow.h"
@@ -14,6 +17,7 @@ using namespace std;
 constexpr const char* const WINDOW_TITLE = "Bow & Arrow 1.0";
 constexpr const char* IMAGE_ROOT = "../assets/images/";
 constexpr const char* LEVEL_ROOT = "../assets/levels/";
+constexpr const char* SAVE_ROOT = "../assets/";
 
 // Estructura para especificar las texturas que hay que
 // cargar y el tamaño de su matriz de frames
@@ -34,19 +38,19 @@ constexpr array<TextureSpec, Game::NUM_TEXTURES> textureList{
 // generador de números aleatorios
 
 Game::Game()
-	: exit(false), goal(false), points(0), randomGen(random_device{}())
+	: exit(false), points(0), randomGen(random_device{}())
 {
 	// Lee archivo para inicializar valores de archivo si existe el nivel 1
 	loadLevel(1);
 	// Carga SDL y crea la ventana con su renderizador
 	if (!SDL_Init(SDL_INIT_VIDEO))
-		throw "SDL_Init: "s + SDL_GetError();
+		throw SDLError("SDL_Init: ");
 
 	if (!SDL_CreateWindowAndRenderer(WINDOW_TITLE,
 		WINDOW_WIDTH, WINDOW_HEIGHT,
 		0, &window, &renderer)
 		|| !SDL_SetRenderDrawColor(renderer,bgColor.r,bgColor.g,bgColor.b,1))
-		throw "window or renderer: "s + SDL_GetError();
+		throw SDLError("Window or renderer: ");
 
 	// Carga las texturas al inicio
 	try {
@@ -67,13 +71,10 @@ Game::Game()
 		}
 		throw; // relanza la excepción
 	}
-
-	// Configura que se pueden utilizar capas translúcidas
-	// SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-
 	// creacion de los objetos del juego
 	bow = new Bow(this, Rectangle(Point2D<float>(WINDOW_WIDTH / 15, WINDOW_HEIGHT / 2), BOW_WIDTH, BOW_HEIGHT), maxArrows);
-	infobar = new InfoBar(this);
+	AddObject(bow); // Lo añade a la lista de objetos
+	infobar = new InfoBar(this); // Infobar es un gameobject va externo a la lista
 }
 
 Game::~Game()
@@ -84,8 +85,8 @@ Game::~Game()
 	for (auto& texture : textures) {
 		delete texture;
 	}
-	delete bow; bow = nullptr;
-	for (GameObject* g : objects) { delete g; g = nullptr; }
+	delete infobar;
+	for (SceneObject* g : objects) { delete g; g = nullptr; }
 }
 
 void
@@ -93,7 +94,6 @@ Game::render() const
 {
 	SDL_RenderClear(renderer);
 	// Delegacion de render a objetos
-	bow->render();
 	infobar->render();
 	for (SceneObject* o : objects) o->render();
 	//
@@ -103,8 +103,10 @@ Game::render() const
 void
 Game::update(float delta)
 {
+	// Comprueba el objetivo
+	cout << points;
+	if (points >= goal) nextLevel();
 	// Delegacion de update a objetos
-	bow->update(delta);
 	// Iterador para ir borrando los objetos si devuelven false
 	for (auto it = objects.begin(); it != objects.end();) {
 		if (!(*it)->update(delta)) {
@@ -137,7 +139,7 @@ Game::run()
 {
 	int level = 1;
 	// bucle principal
-	while (!exit && !goal) {
+	while (!exit) {
 		startTime = SDL_GetTicks();
 		// Manejo de eventos
 		handleEvents();
@@ -157,16 +159,21 @@ Game::run()
 void
 Game::handleEvents()
 {
-	SDL_Event event;
-	// quit lo maneja el juego
+	SDL_Event event; // evento
 	while (SDL_PollEvent(&event)) {
+		// quit lo maneja el juego
 		if (event.type == SDL_EVENT_QUIT)
 		{
 			exit = true;
 			break;
 		}
+		// Guardado y cargado de partida
+		if (event.type == SDL_EVENT_KEY_DOWN && (event.key.mod & SDL_KMOD_CTRL)) {
+			if (event.key.key == SDLK_S) saveGame();
+			else if (event.key.key == SDLK_O) loadGame();
+		}
 		// Delegacion de eventos a objetos
-		bow->handleEvent(event);
+		if(bow) bow->handleEvent(event);
 	}
 }
 void
@@ -196,35 +203,145 @@ Game::checkCollision(const Rectangle& rect)
 	}
 	return nullptr; // si no hay colisiones
 }
+bool
+Game::nextLevel()
+{
+	if (!ifstream(string(LEVEL_ROOT) + to_string(level + 1) + ".txt"s)) return false; // No existe el siguiente nivel
+	// Limpieza de objetos antiguos
+	for (SceneObject* o : objects) delete o;
+	objects.clear();
+	// Carga el nivel
+	++level;
+	loadLevel(level);
+	// Cambia variables a valor inicial
+	points = 0;
+	if(!SDL_SetRenderDrawColor(renderer, bgColor.r, bgColor.g, bgColor.b, 1))
+	throw SDLError("Renderer");
+	// Añade nuevos objetos
+	bow = new Bow(this, Rectangle(Point2D<float>(WINDOW_WIDTH / 15, WINDOW_HEIGHT / 2), BOW_WIDTH, BOW_HEIGHT), maxArrows);
+	AddObject(bow); // Lo añade a la lista de objetos
+	return true;
+}
 void
 Game::loadLevel(int levelNum)
 {
 	// Busca un archivo con ese nombre en LEVEL_ROOT, si no hay tira exception
-	ifstream level(LEVEL_ROOT + to_string(levelNum) + ".txt");
-	if (!level) throw runtime_error(std::format("No existe archivo con el nombre {}.txt para cargar nivel en {}",levelNum, LEVEL_ROOT));
+	string filename = LEVEL_ROOT + to_string(levelNum) + ".txt";
+	ifstream level(filename);
+	if (!level) throw FileNotFoundError(filename);
 	// Abre la lectura de archivo
 	istream& in(level);
-	// Variables que se van a leer inicializadas a -1 para pillar si no se han modificado
-	int arrows = -1, baldelay = -1, r = -1, g = -1, b = -1, balpoints = -1;
 	//Lectura de archivo
 	string line = "";
-	// Lee palabro por palabro hasta quedarse sin archivo
-	while (in >> line)
+	int linenum = 1;
+	// Lee linea por linea hasta quedarse sin archivo
+	while (getline(level,line))
 	{
-		// Si es un comentario nos dejamos de movidas
-		// primer argumento lo he encontrao en cplusplus, dudo que algun animal escriba un comentario de mas de mil caracteres tho
-		if (line[0] == '#') { in.ignore(numeric_limits<streamsize>::max(), '\n'); }
+		// Si es un comentario nos dejamos de movidas, continue para no sumar la linea dos veces
+		if (line.empty() || line[0] == '#') { linenum++; continue; }
 		// palabras clave
-		else if (line == "arrows") in >> arrows; // flechas
-		else if (line == "baldelay") in >> baldelay; // tiempo entre globos
-		else if (line == "bgcolor") in >> r >> g >> b; // RGB fondo
-		else if (line == "balpoints") in >> balloonPoints; // puntos por globo
-		else if (line == "balspeed") in >> balloonSpeed; // velocidad de globos
-		else if (line == "butterflies") in >> butterflies; // numero de mariposas
-		// Si no es ninguna de ellas, ignora
-		else in.ignore(numeric_limits<streamsize>::max(), '\n');
-		// si lee una palabra clave que se reconoce y no parsea bien se devuelve exception
-		// aqui queria poner un format con linea pero luego recorde que esto no es c# y al buscar me parecia algo mas complicado lo pondre en el txt
-		if (in.fail()) throw runtime_error("Lectura de archivo fallada, no se ha podido convertir propiedad por mala conversion");
+		istringstream streamline(line);
+		string word;
+		streamline >> word;
+		if (word == "arrows") {
+			streamline >> maxArrows;
+			if (maxArrows < 0) throw FileFormatError("Numero de flechas fuera de rango", linenum,filename);
+		}
+		else if (word == "baldelay") {
+			streamline >> balloonDelay;
+			if (balloonDelay < 0) throw FileFormatError("Delay de globos fuera de rango", linenum,filename);
+		}
+		else if (word == "bgcolor") {
+			int r = -1, g = -1, b = -1;
+			streamline >> r >> g >> b;
+			if (r < 0 || g < 0 || b < 0 || r > 255 || g > 255 || b > 255) throw FileFormatError("Color de fondo fuera de rango", linenum,filename);
+			else bgColor = SDL_Color(r, g, b, 1);
+		}
+		else if (word == "balpoints") {
+			streamline >> balloonPoints;
+			if (balloonPoints < 0) throw FileFormatError("Numero de flechas fuera de rango", linenum,filename);
+		}
+		else if (word == "balspeed") {
+			streamline >> balloonSpeed;
+			if (balloonSpeed < 0) throw FileFormatError("Velocidad de globos fuera de rango", linenum,filename);
+		}
+		else if (word == "butterflies") {
+			streamline >> butterflies;
+			if (butterflies < 0) throw FileFormatError("Numero de mariposas fuera de rango", linenum,filename);
+		}
+		else if (word == "goal") {
+			streamline >> goal;
+			if (goal < 0) throw FileFormatError("Goal fuera de rango", linenum, filename);
+		}
+		// Si se ha parseado algo mal
+		if (in.fail()) throw FileFormatError("Mal formato de archivo, conversion fallida", linenum,filename);
+		linenum++;
+	}
+}
+void
+Game::saveGame() const
+{
+	// ostream crea el archivo si no existe, o lo limpia si si
+	ofstream savefile(string(SAVE_ROOT) + "saved.txt");
+	if (!savefile.is_open()) throw FileNotFoundError("saved.txt");
+	// Encabezado con datos globales
+	savefile << level << " " << points << " " << bow->GetArrowNum() << " " << endl;
+	savefile << randomGen << endl;
+	// Lista sceneobjects
+	for (SceneObject* o : objects) {
+		o->Save(savefile); savefile << endl;
+	}
+}
+void 
+Game::loadGame()
+{
+	// Abre el archivo
+	ifstream savefile(string(SAVE_ROOT) + "saved.txt");
+	if (!savefile) throw FileNotFoundError("saved.txt");
+	// Variables lectura
+	int linenum = 1; string line = "";
+	// Variables temporales
+	int arrowLoad; Bow* bowLoad = nullptr;
+	list<SceneObject*> objLoad; 
+	try {
+		// Dos primeras lineas siembre debe haber
+		if (!(savefile >> level >> points >> arrowLoad)) throw "Error al leer encabezado con parámetros";
+		++linenum;
+		if (!(savefile >> randomGen)) throw "Error al leer semilla";
+		++linenum;
+		// Lista de objetos
+		getline(savefile, line); // Para quitar \n
+		while (getline(savefile, line))
+		{
+			// palabra clave dice que objeto es
+			istringstream streamline(line);
+			string obj;
+			streamline >> obj;
+			// Diferenciación
+			if (obj == "Bow") {
+				bowLoad = new Bow(this, streamline);
+				objLoad.push_back(bowLoad);
+			}
+			else if (obj == "Arrow") {
+				objLoad.push_back(new Arrow(this, streamline));
+			}
+			else if (obj == "Balloon") {
+				objLoad.push_back(new Balloon(this, streamline));
+			}
+			else if (obj == "Butterfly") {
+			}
+			else throw "Objeto de tipo desconocido";
+			++linenum;
+		}
+		loadLevel(level);
+		// Si todo ha salido bien
+		for (SceneObject* o : objects) delete o; // Liberación de memoria antigua
+		// Se sobreescribe con la nueva
+		objects = objLoad; 
+		if (bowLoad) bow = bowLoad; else throw "Falta arco bro";
+	}
+	catch (const char* w){
+		for (SceneObject* o : objLoad) delete o; // Liberación de la memoria
+		throw FileFormatError(w, linenum, string(SAVE_ROOT) + "saved.txt");
 	}
 }

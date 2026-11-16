@@ -12,8 +12,11 @@ private:
 public:
 	// Constructora
 	Arrow(Game* g, Rectangle b, Vector2D<float> s = Vector2D(0.3f, 0.0f));
+	Arrow(Game* g, std::istream& in);
 	// Logica
 	bool update(float delta) override;
+	// Para guardar en archivo
+	void Save(std::ostream& out) const override;
 };
 #define ARROW_H
 #endif // !ARROW_H

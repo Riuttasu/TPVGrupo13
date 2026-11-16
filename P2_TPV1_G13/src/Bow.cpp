@@ -3,6 +3,13 @@
 Bow::Bow(Game* g, Rectangle b, int a) :
 	SceneObject(g,b,g->getTexture(Game::TextureName::BOW)), numArrows(a)
 {}
+Bow::Bow(Game* g, std::istream& in)
+	: SceneObject(g,in, g->getTexture(Game::TextureName::BOW))
+{
+	float v; int n; bool s;
+	if (!(in >> v >> n >> s)) throw "Error al leer parámetros";
+	vel = v; numArrows = n; strung = s;
+}
 void Bow::handleEvent(const SDL_Event& event)
 {
 	// Si se ha presionado una tecla
@@ -43,7 +50,7 @@ bool Bow::update(float delta)
 	else if (body.getTopLeftCorner().getY()+body.getHeight() > game->WINDOW_HEIGHT)
 	body = Rectangle(Point2D<float>(body.getTopLeftCorner().getX(), game->WINDOW_HEIGHT - body.getHeight()), body.getWidth(), body.getHeight());
 	// No se destruye en ningun caso durante el juego
-	return false;
+	return true;
 }
 void Bow::render() const
 {
@@ -66,4 +73,10 @@ void Bow::Shoot()
 		// Quita una flecha del total
 		--numArrows;
 	}
+}
+void Bow::Save(std::ostream& out) const
+{
+	out << "Bow ";
+	SceneObject::Save(out);
+	out << vel << " " << numArrows << " " << strung << " ";
 }

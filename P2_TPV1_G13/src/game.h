@@ -55,11 +55,11 @@ private:
 	void render() const;
 	void update(float delta);
 	void handleEvents();
+	int level = 1;
 	// spawn de globos
 	void addBalloonLogic(float delta);
 	// bools que rompen bucle principal
 	bool exit; // Salida mediante cerrar ventana
-	bool goal; // Salida mediante terminar objetivo/flechas
 	// Manejo de tiempo
 	uint64_t startTime, frameTime = 0;
 	// Generador de aleatorios
@@ -75,8 +75,9 @@ private:
 	int maxArrows = 5; // Numero maximo de flechas
 	int balloonDelay = 1000; // Tiempo entre globos
 	int balloonPoints = 10; // Numero de puntos por globo
-	float balloonSpeed = 0.3f; // Velocidad globos
-	int butterflies = 0;
+	float balloonSpeed = 0.03f; // Velocidad globos
+	int butterflies = 0; // Numero mariposas 
+	int goal = 0; // Puntos a los que llegar
 public:
 	Game();
 	~Game();
@@ -93,8 +94,13 @@ public:
 	void AddObject(SceneObject* obj);
 	// Comprueba si hay algún objeto colocado en ese rectángulo
 	SceneObject* checkCollision(const Rectangle& rect) ;
-	// Carga desde archivo
-	void loadLevel(int levelNum);
+	// Niveles
+	bool nextLevel(); // Comprueba si hay siguiente nivel, si hay, lo carga
+	void loadLevel(int levelNum); // Cargar nivel de archivo
+	// Guardar y cargar partida
+	void saveGame() const; // Guardar partida
+	void loadGame(); // Cargar partida
+
 };
 
 
