@@ -72,10 +72,10 @@ Game::Game()
 	}
 	catch (...) {
 		// liberar la memoria reservada
-		delete font; font = nullptr;
+		TTF_CloseFont(font);
 		TTF_DestroyRendererTextEngine(engine);
-		delete window; window = nullptr;
-		delete renderer; renderer = nullptr;
+		SDL_DestroyRenderer(renderer);
+		SDL_DestroyWindow(window);
 		for (auto& texture : textures) {
 			delete texture;
 		}
@@ -91,13 +91,13 @@ Game::Game()
 Game::~Game()
 {
 	//  liberar la memoria reservada por la clase
-	delete font; font = nullptr;
-	delete engine; engine = nullptr;
-	delete window; window = nullptr;
-	delete renderer; renderer = nullptr;
+	TTF_CloseFont(font);
+	TTF_DestroyRendererTextEngine(engine);
 	for (auto& texture : textures) {
 		delete texture;
 	}
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
 	delete infobar;
 	for (SceneObject* g : objects) { delete g; g = nullptr; }
 }
