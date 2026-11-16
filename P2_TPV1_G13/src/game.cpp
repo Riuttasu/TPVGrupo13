@@ -7,6 +7,7 @@ using namespace std;
 #include "GameErrors.h"
 #include <SDL3_image/SDL_image.h> // SDL
 // Objetos
+#include "Butterfly.h"
 #include "Bow.h"
 #include "Arrow.h"
 #include "Balloon.h"
@@ -39,10 +40,10 @@ constexpr array<TextureSpec, Game::NUM_TEXTURES> textureList{
 // generador de números aleatorios
 
 Game::Game()
-	: exit(false), points(0), randomGen(random_device{}())
+	: exit(false), points(0), level(1), randomGen(random_device{}())
 {
 	// Lee archivo para inicializar valores de archivo si existe el nivel 1
-	loadLevel(1);
+	loadLevel(level);
 	// Carga SDL y crea la ventana con su renderizador
 	if (!SDL_Init(SDL_INIT_VIDEO))
 		throw SDLError("SDL_Init: ");
@@ -75,7 +76,7 @@ Game::Game()
 	// creacion de los objetos del juego
 	bow = new Bow(this, Rectangle(Point2D<float>(WINDOW_WIDTH / 15, WINDOW_HEIGHT / 2), BOW_WIDTH, BOW_HEIGHT), maxArrows);
 	AddObject(bow); // Lo añade a la lista de objetos
-	AddObject(new Butterfly(this, Rectangle(Point2D<float>(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 60, 60), Vector2D<float>(0, -0.08f), 3));
+	spawnButterflies();
 	infobar = new InfoBar(this); // Infobar es un gameobject va externo a la lista
 }
 
@@ -138,7 +139,6 @@ Game::addBalloonLogic(float delta)
 void
 Game::run()
 {
-	int level = 1;
 	// bucle principal
 	while (!exit) {
 		startTime = SDL_GetTicks();
@@ -182,6 +182,19 @@ Game::AddObject(SceneObject* obj)
 {
 	objects.push_back(obj);
 }
+void
+Game::spawnButterflies()
+{
+	for (int i = 0;i < butterflies;++i)
+	{ 
+		// Randoms
+		Point2D<float> pos(uniform_real_distribution<float>(WINDOW_WIDTH/5, WINDOW_WIDTH-BUTTERFLY_WIDTH)(randomGen), uniform_real_distribution<float>(BUTTERFLY_HEIGHT, WINDOW_HEIGHT-BUTTERFLY_HEIGHT)(randomGen));
+		Vector2D<float> vel(uniform_real_distribution<float>(-0.03,0.03)(randomGen),uniform_real_distribution<float>(-0.03, 0.03)(randomGen));
+		int type = uniform_int_distribution<int>(0, 4)(randomGen);
+		// Añade la mariposa
+		AddObject(new Butterfly(this, Rectangle(pos, BUTTERFLY_WIDTH, BUTTERFLY_HEIGHT), vel, 3));
+	}
+}
 int
 Game::getArrows() const
 {
@@ -219,6 +232,7 @@ Game::nextLevel()
 	if(!SDL_SetRenderDrawColor(renderer, bgColor.r, bgColor.g, bgColor.b, 1))
 	throw SDLError("Renderer");
 	// Añade nuevos objetos
+	spawnButterflies();
 	bow = new Bow(this, Rectangle(Point2D<float>(WINDOW_WIDTH / 15, WINDOW_HEIGHT / 2), BOW_WIDTH, BOW_HEIGHT), maxArrows);
 	AddObject(bow); // Lo añade a la lista de objetos
 	return true;
@@ -330,6 +344,7 @@ Game::loadGame()
 				objLoad.push_back(new Balloon(this, streamline));
 			}
 			else if (obj == "Butterfly") {
+				objLoad.push_back(new Butterfly(this, streamline));
 			}
 			else throw "Objeto de tipo desconocido";
 			++linenum;

@@ -37,6 +37,7 @@ public:
 	static constexpr int ARROW_WIDTH = 45, ARROW_HEIGHT = 22;
 	static constexpr int BOW_WIDTH = 50, BOW_HEIGHT = 50;
 	static constexpr int BALLOON_WIDTH = 60, BALLOON_HEIGHT = 90;
+	static constexpr int BUTTERFLY_WIDTH = 32, BUTTERFLY_HEIGHT = 32;
 	// ints aleatorios
 	int randomInt(int min, int max) { return std::uniform_int_distribution<int>(min, max)(randomGen); }
 	//
@@ -57,7 +58,7 @@ private:
 	void render() const;
 	void update(float delta);
 	void handleEvents();
-	int level = 1;
+	int level;
 	// spawn de globos
 	void addBalloonLogic(float delta);
 	// bools que rompen bucle principal
@@ -94,6 +95,7 @@ public:
 	void run();
 	// anade una flecha a la escena en la posicion dada como esquina superior izquierda
 	void AddObject(SceneObject* obj);
+	void spawnButterflies(); // Spawnea el número de mariposas dadas por el nivel 
 	// Comprueba si hay algún objeto colocado en ese rectángulo
 	SceneObject* checkCollision(const Rectangle& rect) ;
 	// Niveles

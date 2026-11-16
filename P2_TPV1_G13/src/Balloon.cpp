@@ -12,7 +12,7 @@ Balloon::Balloon(Game* g, std::istream& in)
 {
 	int c,a,t; bool e;
 	if (!(in >> c >> e >> a >> t)) throw "Error al leer parámetros";
-	this->color = c; this->exploded = e; this->animFrame = a; this->accumulatedTime = t;
+	color = c; exploded = e; animFrame = a; accumulatedTime = t;
 }
 // render del globo
 void Balloon::render() const{

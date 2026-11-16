@@ -22,6 +22,7 @@ private:
 public:
 	//constructor
 	Butterfly(Game* g, Rectangle b, Vector2D<float> velY, int type);
+	Butterfly(Game* g, std::istream& in);
 	// no hay que hacer destructor, xq no hay memoria dinámica
 
 	// renderiza a la mariposa en pantalla
@@ -32,6 +33,9 @@ public:
 
 	// detector de colisiones
 	bool hit(const Rectangle& obj) override;
+
+	// Para guardar en archivo
+	void Save(std::ostream& out) const override;
 };
 
 #endif // !BUTTERFLY_H
