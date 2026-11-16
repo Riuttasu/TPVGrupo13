@@ -15,12 +15,24 @@ bool Arrow::update(float delta)
 	MobileObject::update(delta);
 	// se saca el rectangulo de la punta de la flecha para comprobar colisiones
 	Rectangle tip = Rectangle(Point2D<float>(body.getTopLeftCorner().getX() + (body.getWidth() * 4/5), body.getTopLeftCorner().getY() + (body.getHeight() * 2/3)), body.getWidth()/5, body.getHeight()/3);
-	// comprueba si hay colisiones con globos
-	game->checkCollision(tip);
+	// comprueba si hay colisiones
+	SceneObject* hit = game->checkCollision(tip);
+	if (hit != nullptr) hitLogic(hit);
 	// Si se sale por la izquierda de la pantalla devuelve true para que el game la destruya
 	return (body.getTopLeftCorner().getX() < game->WINDOW_WIDTH);
 }
-
+void Arrow::hitLogic(SceneObject* hit)
+{
+	// Si es un globo
+	if (dynamic_cast<Balloon*>(hit)) {
+		game->addPoints(game->getBalPoints() * combo);
+		combo++;
+	}
+	// Si es una mariposa
+	else if (dynamic_cast<Butterfly*>(hit)) {
+		game->addPoints(-5);
+	}
+}
 void Arrow::Save(std::ostream& out) const
 {
 	out << "Arrow ";

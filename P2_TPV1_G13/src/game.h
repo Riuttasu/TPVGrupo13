@@ -91,6 +91,7 @@ public:
 	int getArrows() const;
 	// Añade puntos
 	void addPoints(int delta);
+	int getBalPoints() const { return balloonPoints; }
 	// Ejecuta el bucle principal del juego
 	void run();
 	// anade una flecha a la escena en la posicion dada como esquina superior izquierda
