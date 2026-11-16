@@ -17,7 +17,6 @@ void Balloon::render() const{
 
 // update para el movimiento del globo
 bool Balloon::update(float delta){
-	
 	// si el globo es estallado por una flecha y aún no se ha terminado la animación de la explosión
 	if (exploded) { // si explota no se mueve
 		// se cuenta el tiempo
