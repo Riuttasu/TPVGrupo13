@@ -37,6 +37,8 @@ public:
 	static constexpr int ARROW_WIDTH = 45, ARROW_HEIGHT = 22;
 	static constexpr int BOW_WIDTH = 50, BOW_HEIGHT = 50;
 	static constexpr int BALLOON_WIDTH = 60, BALLOON_HEIGHT = 90;
+	// ints aleatorios
+	int randomInt(int min, int max) { return std::uniform_int_distribution<int>(min, max)(randomGen); }
 	//
 	enum TextureName
 	{

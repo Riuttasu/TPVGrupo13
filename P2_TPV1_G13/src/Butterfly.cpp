@@ -4,7 +4,7 @@
 Butterfly::Butterfly(Game* g, Rectangle b, Vector2D<float> velY, int type)
 	: MobileObject(g, b, g->getTexture(Game::TextureName::BUTTERFLY), velY), type(type)
 {
-	type = type % 4; // por si se introduce un tipo fuera de rango
+	this->type = type % 4; // por si se introduce un tipo fuera de rango
 }
 
 // render de la mariposa
@@ -32,7 +32,9 @@ bool Butterfly::update(float delta) {
 			this->speed = Vector2D<float>(speed.getX(), -speed.getY());
 		}
 		// de vez en cuando, la mariposa cambia de dirección aleatoriamente
-		
+		if (game->randomInt(0, 100) < 2) { // 2% de probabilidad por frame
+			this->speed = Vector2D<float>(speed.getX(), -speed.getY());
+		}
 	}
 	else { // cuando ha sido golpeada, cae hasta salir de la pantalla
 		// movimiento
