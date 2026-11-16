@@ -2,8 +2,7 @@ Integrantes del grupo:
 Leo Reyes Funk
 Lune Redondo Vaillo
 Funcionalidades:
-InfoBar con contador de flechas
-LoadLevel lee background color y puntaje de globos
+InfoBar con contador de flechas y texto que dice los puntos (de la practica 1 estaba el contador de flechas)
+(creo que el texto está bien implementado lo de cambiar las propiedades del proyecto me ha sido un poco complicado para el texto el motor mucho más fácil gracias tema 7)
 Cosas que no hemos llegado a hacer:
-InfoBar no le hemos puesto puntos que se pongan en pantalla del juego, se hace cout
-No hemos puesto goal para el nivel, se pasa de nivel si o si cuando se terminan las flechas
+Hacer que las exceptions se pongan como ventanas
