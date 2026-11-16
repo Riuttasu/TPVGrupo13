@@ -102,7 +102,7 @@ public:
 	void AddObject(SceneObject* obj);
 	void spawnButterflies(); // Spawnea el número de mariposas dadas por el nivel 
 	// Comprueba si hay algún objeto colocado en ese rectángulo
-	SceneObject* checkCollision(const Rectangle& rect) ;
+	bool checkCollision(const Rectangle& rect, int combo) ;
 	// Niveles
 	bool nextLevel(); // Comprueba si hay siguiente nivel, si hay, lo carga
 	void loadLevel(int levelNum); // Cargar nivel de archivo

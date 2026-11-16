@@ -13,6 +13,7 @@ class SceneObject: public GameObject
 protected:
 	Rectangle body;
 	Texture* texture;
+	int pointsHit = 0; // Puntos por ser colisionado
 public:
 	SceneObject(Game* g, Rectangle b, Texture* t);
 	SceneObject(Game* g, std::istream& in, Texture* t); // Constructora por guardado
@@ -20,6 +21,7 @@ public:
 	void render() const override;
 	virtual bool hit(const Rectangle& c);
 	virtual void Save(std::ostream& out) const; // Para guardar en archivo
+	virtual int getPoints() const { return pointsHit; } // Getter de los puntos por ser colisionado
 };
 #endif // !SCENEOBJECT_H
 

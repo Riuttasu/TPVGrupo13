@@ -5,6 +5,7 @@ Butterfly::Butterfly(Game* g, Rectangle b, Vector2D<float> velY, int type)
 	: MobileObject(g, b, g->getTexture(Game::TextureName::BUTTERFLY), velY), type(type)
 {
 	this->type = type % 4; // por si se introduce un tipo fuera de rango
+	pointsHit = -5; // Resta puntos cuando le disparan
 }
 Butterfly::Butterfly(Game* g, std::istream& in)
 	: MobileObject(g,in, g->getTexture(Game::TextureName::BUTTERFLY))
@@ -12,6 +13,7 @@ Butterfly::Butterfly(Game* g, std::istream& in)
 	int c, a, t; bool s;
 	if (!(in >> c >> s >> a >> t)) throw "Error al leer parámetros";
 	type = c; shot = s; animFrame = a; accumulatedTime = t;
+	pointsHit = -5; // Resta puntos cuando le disparan
 }
 // render de la mariposa
 void Butterfly::render() const {

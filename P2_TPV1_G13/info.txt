@@ -6,3 +6,5 @@ InfoBar con contador de flechas y texto que dice los puntos (de la practica 1 es
 (creo que el texto está bien implementado lo de cambiar las propiedades del proyecto me ha sido un poco complicado para el texto el motor mucho más fácil gracias tema 7)
 Cosas que no hemos llegado a hacer:
 Hacer que las exceptions se pongan como ventanas
+
+Perdon por la reentrega tardía justo me he despertado y he visto el mail del dynamic casting, ya está rehecho sin el y perdon por las molestias de nuevo

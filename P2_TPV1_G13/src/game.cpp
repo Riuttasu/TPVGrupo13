@@ -216,16 +216,17 @@ Game::addPoints(int delta)
 {
 	points += delta;
 }
-SceneObject*
-Game::checkCollision(const Rectangle& rect)
+bool
+Game::checkCollision(const Rectangle& rect,int combo = 0)
 {
 	// comprueba si hay algún objeto que colisione con el rectangulo dado
 	for (SceneObject* o : objects){
 		if (o->hit(rect)) {
-			return o; // Devuelve un puntero al objeto
+			points += o->getPoints() * combo; // Suma los puntos si el objeto dado tiene que darlos al ser colisionado
+			return true; // Devuelve true
 		}
 	}
-	return nullptr; // si no hay colisiones
+	return false; // si no hay colisiones
 }
 bool
 Game::nextLevel()

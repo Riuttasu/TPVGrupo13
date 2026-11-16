@@ -6,6 +6,7 @@ Balloon::Balloon(Game* g, Rectangle b, Vector2D<float> velY, int color)
 	: MobileObject(g,b,g->getTexture(Game::TextureName::BALLOON), velY), color(color)
 {
 	this->color = color % 7; // por si se introduce un color fuera de rango
+	pointsHit = g->getBalPoints();
 }
 Balloon::Balloon(Game* g, std::istream& in) 
 	: MobileObject(g,in, g->getTexture(Game::TextureName::BALLOON))
@@ -13,6 +14,7 @@ Balloon::Balloon(Game* g, std::istream& in)
 	int c,a,t; bool e;
 	if (!(in >> c >> e >> a >> t)) throw "Error al leer parámetros";
 	color = c; exploded = e; animFrame = a; accumulatedTime = t;
+	pointsHit = g->getBalPoints();
 }
 // render del globo
 void Balloon::render() const{
