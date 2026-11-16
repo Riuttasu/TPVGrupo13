@@ -104,7 +104,6 @@ void
 Game::update(float delta)
 {
 	// Comprueba el objetivo
-	cout << points;
 	if (points >= goal) nextLevel();
 	// Delegacion de update a objetos
 	// Iterador para ir borrando los objetos si devuelven false
