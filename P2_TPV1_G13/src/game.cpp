@@ -40,7 +40,7 @@ constexpr array<TextureSpec, Game::NUM_TEXTURES> textureList{
 // generador de números aleatorios
 
 Game::Game()
-	: exit(false), level(1), points(0),  randomGen(random_device{}())
+	: exit(false),  points(0), level(1), randomGen(random_device{}())
 {
 	// Lee archivo para inicializar valores de archivo si existe el nivel 1
 	loadLevel(level);
