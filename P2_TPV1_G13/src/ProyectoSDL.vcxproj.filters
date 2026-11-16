@@ -60,6 +60,9 @@
     <ClCompile Include="InfoBar.cpp">
       <Filter>Archivos de código fuente\Objetos</Filter>
     </ClCompile>
+    <ClCompile Include="Butterfly.cpp">
+      <Filter>Archivos de código fuente\Objetos</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -93,6 +96,9 @@
       <Filter>Archivos de encabezado\Objetos</Filter>
     </ClInclude>
     <ClInclude Include="InfoBar.h">
+      <Filter>Archivos de encabezado\Objetos</Filter>
+    </ClInclude>
+    <ClInclude Include="Butterfly.h">
       <Filter>Archivos de encabezado\Objetos</Filter>
     </ClInclude>
   </ItemGroup>
