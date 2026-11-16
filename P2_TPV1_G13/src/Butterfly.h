@@ -29,7 +29,7 @@ public:
 	bool update(float delta) override;
 
 	// detector de colisiones
-	bool hit(const Rectangle& obj) override;
+	//bool hit(const Rectangle& obj) override;
 };
 
 #endif // !BUTTERFLY_H

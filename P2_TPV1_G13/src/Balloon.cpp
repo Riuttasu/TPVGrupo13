@@ -17,14 +17,9 @@ void Balloon::render() const{
 
 // update para el movimiento del globo
 bool Balloon::update(float delta){
-	// Movimiento
-	MobileObject::update(delta);
-	// si el globo se sale de la pantalla
-	if (body.getTopLeftCorner().getY() + body.getHeight() < 0) {
-		return false; // el globo ha salido de la pantalla
-	}
+	
 	// si el globo es estallado por una flecha y aún no se ha terminado la animación de la explosión
-	else if (exploded) {
+	if (exploded) { // si explota no se mueve
 		// se cuenta el tiempo
 		accumulatedTime += delta;
 		// si ha pasado el tiempo de un frame
@@ -34,7 +29,15 @@ bool Balloon::update(float delta){
 			else return false; // si se ha llegado al ultimo frame se destruye
 		}
 	}
-	else return true;
+	else {
+		// Movimiento
+		MobileObject::update(delta);
+		// si el globo se sale de la pantalla
+		if (body.getTopLeftCorner().getY() + body.getHeight() < 0) {
+			return false; // el globo ha salido de la pantalla
+		}
+	}
+	return true;
 }
 
 // detector de colisiones
