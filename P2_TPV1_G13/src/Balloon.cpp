@@ -5,7 +5,7 @@
 Balloon::Balloon(Game* g, Rectangle b, Vector2D<float> velY, int color)
 	: MobileObject(g,b,g->getTexture(Game::TextureName::BALLOON), velY), color(color)
 {
-	if (color < 0 || color > 6) color = 1; // Por si se introduce un color fuera de rango
+	color = color % 7; // por si se introduce un color fuera de rango
 }
 
 // render del globo
@@ -37,8 +37,7 @@ bool Balloon::update(float delta){
 }
 
 // detector de colisiones
-/*
-bool Balloon::Hit(const Rectangle& obj)
+bool Balloon::hit(const Rectangle& obj)
 {
 	if (!exploded && obj.hasIntersection(body)){
 		exploded = true;
@@ -46,4 +45,3 @@ bool Balloon::Hit(const Rectangle& obj)
 	}
 	return false;
 }
-*/

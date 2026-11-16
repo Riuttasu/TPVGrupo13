@@ -11,13 +11,13 @@ class Game;
 class Balloon : public MobileObject
 {
 private:
-	const int animationTime = 500; // Tiempo de la animacion de explotar, en milisegundos
-	int color; // Color del globo 0-6
+	const int animationTime = 500; // tiempo de la animacion de explotar, en milisegundos
+	int color; // color del globo 0-6
 	bool exploded = false; // para la animación de la explosión del globo
 	int animFrame = 0; // para la animación de la explosión del globo
 public:
 	// constructor
-	Balloon(Game* g, Rectangle b, Vector2D<float> velY, int color = 1);
+	Balloon(Game* g, Rectangle b, Vector2D<float> velY, int color);
 
 	// no hay que hacer destructor, xq no hay memoria dinámica
 
@@ -28,7 +28,7 @@ public:
 	bool update(float delta) override;
 
 	// detector de colisiones
-	bool Hit(const Rectangle& obj);
+	bool hit(const Rectangle& obj) override;
 };
 #endif // !BALLOON_H
 

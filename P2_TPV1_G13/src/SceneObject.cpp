@@ -4,7 +4,7 @@ SceneObject::SceneObject(Game* g, Rectangle b, Texture* t)
 {}
 bool SceneObject::hit(const Rectangle& c)
 {
-	return (c.hasIntersection(body));
+	return false;
 }
 void SceneObject::render() const 
 {
