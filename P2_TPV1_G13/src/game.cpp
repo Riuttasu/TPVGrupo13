@@ -6,12 +6,12 @@ using namespace std;
 #include <algorithm>
 #include "GameErrors.h"
 #include <SDL3_image/SDL_image.h> // SDL
+#include <SDL3_ttf/SDL_textengine.h>
 // Objetos
 #include "Butterfly.h"
 #include "Bow.h"
 #include "Arrow.h"
 #include "Balloon.h"
-#include "Butterfly.h"
 #include "InfoBar.h"
 #include "rectangle.h"
 #include "texture.h"
@@ -53,7 +53,13 @@ Game::Game()
 		0, &window, &renderer)
 		|| !SDL_SetRenderDrawColor(renderer,bgColor.r,bgColor.g,bgColor.b,1))
 		throw SDLError("Window or renderer: ");
-
+	// Texto y motor de texto
+	if (!TTF_Init()) throw SDLError("Text: ");
+	font = TTF_OpenFont("../assets/font/font.ttf", 24);
+	if (!font) throw FileNotFoundError("../assets/font/font.ttf");
+	engine = TTF_CreateRendererTextEngine(renderer);
+	if (!engine) throw SDLError("Engine: ");
+	
 	// Carga las texturas al inicio
 	try {
 		textures.fill(nullptr);
@@ -66,8 +72,10 @@ Game::Game()
 	}
 	catch (...) {
 		// liberar la memoria reservada
-		window = nullptr;
-		renderer = nullptr;
+		delete font; font = nullptr;
+		TTF_DestroyRendererTextEngine(engine);
+		delete window; window = nullptr;
+		delete renderer; renderer = nullptr;
 		for (auto& texture : textures) {
 			delete texture;
 		}
@@ -77,12 +85,14 @@ Game::Game()
 	bow = new Bow(this, Rectangle(Point2D<float>(WINDOW_WIDTH / 15, WINDOW_HEIGHT / 2), BOW_WIDTH, BOW_HEIGHT), maxArrows);
 	AddObject(bow); // Lo añade a la lista de objetos
 	spawnButterflies();
-	infobar = new InfoBar(this); // Infobar es un gameobject va externo a la lista
+	infobar = new InfoBar(this,engine,font); // Infobar es un gameobject va externo a la lista
 }
 
 Game::~Game()
 {
 	//  liberar la memoria reservada por la clase
+	delete font; font = nullptr;
+	delete engine; engine = nullptr;
 	delete window; window = nullptr;
 	delete renderer; renderer = nullptr;
 	for (auto& texture : textures) {
@@ -109,6 +119,7 @@ Game::update(float delta)
 	// Comprueba el objetivo
 	if (points >= goal) nextLevel();
 	// Delegacion de update a objetos
+	infobar->update(delta);
 	// Iterador para ir borrando los objetos si devuelven false
 	for (auto it = objects.begin(); it != objects.end();) {
 		if (!(*it)->update(delta)) {
@@ -130,8 +141,7 @@ Game::addBalloonLogic(float delta)
 		// Variables random del globo a spawnear
 		int posX = uniform_int_distribution<int>(WINDOW_WIDTH / 3, WINDOW_WIDTH - 100)(randomGen); // posicion aleatoria entre 1/3 y el fin (con margen)
 		int color = uniform_int_distribution<int>(0, 6)(randomGen); // color aleatorio entre 0 y 6
-		Vector2D<float> velY(0, -balloonSpeed); // Velocidad no aleatoria pero dada por archivo
-		//Vector2D<float> velY(0,-uniform_real_distribution<float>(0.076f, 0.101f)(randomGen)); // velocidad aleatoria
+		Vector2D<float> velY(0, -uniform_real_distribution<float>(balloonSpeed-0.1, balloonSpeed+0.1)(randomGen)); 
 		// Mete el globo en el juego
 		AddObject(new Balloon(this,Rectangle(Point2D<float>(posX,WINDOW_HEIGHT),BALLOON_WIDTH,BALLOON_HEIGHT), velY,color));
 	}
@@ -292,6 +302,7 @@ Game::loadLevel(int levelNum)
 		if (in.fail()) throw FileFormatError("Mal formato de archivo, conversion fallida", linenum,filename);
 		linenum++;
 	}
+	cout << "Nivel " << levelNum << " cargado, objetivo: " << goal << endl;
 }
 void
 Game::saveGame() const

@@ -3,6 +3,7 @@
 #define GAME_H
 
 #include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_textengine.h>
 #include <array>
 #include <fstream>
 #include <list>
@@ -54,6 +55,8 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	std::array<Texture*, NUM_TEXTURES> textures;
+	TTF_Font* font;
+	TTF_TextEngine* engine;
 	// Bucle principal
 	void render() const;
 	void update(float delta);
@@ -92,6 +95,7 @@ public:
 	// Añade puntos
 	void addPoints(int delta);
 	int getBalPoints() const { return balloonPoints; }
+	int getPoints() const { return points; }
 	// Ejecuta el bucle principal del juego
 	void run();
 	// anade una flecha a la escena en la posicion dada como esquina superior izquierda
