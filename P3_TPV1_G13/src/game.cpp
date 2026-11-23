@@ -74,6 +74,7 @@ Game::Game()
 		// liberar la memoria reservada
 		TTF_CloseFont(font);
 		TTF_DestroyRendererTextEngine(engine);
+		TTF_Quit();
 		SDL_DestroyRenderer(renderer);
 		SDL_DestroyWindow(window);
 		for (auto& texture : textures) {
@@ -93,6 +94,7 @@ Game::~Game()
 	//  liberar la memoria reservada por la clase
 	TTF_CloseFont(font);
 	TTF_DestroyRendererTextEngine(engine);
+	TTF_Quit();
 	for (auto& texture : textures) {
 		delete texture;
 	}

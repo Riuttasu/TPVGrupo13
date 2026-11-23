@@ -14,6 +14,7 @@ private:
 	TTF_Font* font; // Fuente
 public:
 	InfoBar(Game* game,TTF_TextEngine* e, TTF_Font* f);
+	~InfoBar();
 	void render() const override;
 	bool update(float delta) override;
 };

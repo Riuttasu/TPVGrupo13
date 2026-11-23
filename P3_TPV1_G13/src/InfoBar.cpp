@@ -6,6 +6,10 @@ InfoBar::InfoBar(Game* g,TTF_TextEngine* e, TTF_Font* f) : GameObject(g), engine
 		game->ARROW_WIDTH, game->ARROW_HEIGHT/2);
 	text = TTF_CreateText(engine, font, "0", 0);
 }
+InfoBar::~InfoBar()
+{
+	TTF_DestroyText(text);
+}
 void InfoBar::render() const 
 {
 	// Flechas
