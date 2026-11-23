@@ -6,7 +6,7 @@ using namespace std;
 #include <algorithm>
 #include "GameErrors.h"
 #include <SDL3_image/SDL_image.h> // SDL
-#include <SDL3_ttf/SDL_textengine.h>
+#include <SDL3_ttf/SDL_ttf.h>
 // Objetos
 #include "Butterfly.h"
 #include "Bow.h"
