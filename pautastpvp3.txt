@@ -1,0 +1,28 @@
+Game hereda privadamente de GameStateMachine
+El gameobject está asociado al estado del juego
+SceneObject solo va a haberlos en el PlayState, son especificos de este
+//
+Label para pintar rotulos de puntuacion, final, no son clickeables
+Botones son labels que puedes clickear
+// Herencia multiple
+Bow va a heredar de sceneobject y eventhandler , ambas public
+// 
+Clase gamestate está en las diapos
+La labor mas grande es separar el Game en el nuevo Game con texturas y máquina de estados y el "viejo" game con la gamestate
+Se puede hacer una clase MenuState comun a MainMenustate,pausestate... pero no es obligatorio
+// Botones y evento
+Está en el ejemplo de la pelota , mirar ese codigo, solo que dice que ahi está al reves , linea de abajo como deberia ser
+Eventos de SDL hay que manejarlos con el método virtual de eventhandler
+Eventos de botones hay que manejarlos con callbacks -> clase button con lista de callbacks en el método connect, callback es método de tipo std::function(void)
+// Colores botones y cosos
+Texturas son blancas para que se multiplique el color se convierta de ese color
+Se puede poner cualquier forma de resaltarlo, pero tiene que tenerla
+// Recompensas
+// Listas de objeto
+En todos los estados van a estar los objetos en la lista de gameobjects
+Segunda lista de sceneobject en el playstate (ej. infobar no está aqui)
+Para eliminar el objeto de ambas listas a la vez -> dos formas
+1. un iterador a la lista de sceneobject, coste O(n) iterador, coste O(1) borrar el objeto
+2. convertir sceneobject en nodo de una lista enlazada, a ruben no se si le gusta
+// DEfensa
+Defensa parcial gamestate y cosos 

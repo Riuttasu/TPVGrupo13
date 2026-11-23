@@ -1,0 +1,82 @@
+#include "Bow.h"
+#include "Arrow.h"
+Bow::Bow(Game* g, Rectangle b, int a) :
+	SceneObject(g,b,g->getTexture(Game::TextureName::BOW)), numArrows(a)
+{}
+Bow::Bow(Game* g, std::istream& in)
+	: SceneObject(g,in, g->getTexture(Game::TextureName::BOW))
+{
+	float v; int n; bool s;
+	if (!(in >> v >> n >> s)) throw "Error al leer parámetros";
+	vel = v; numArrows = n; strung = s;
+}
+void Bow::handleEvent(const SDL_Event& event)
+{
+	// Si se ha presionado una tecla
+	if (event.type == SDL_EVENT_KEY_DOWN)
+	{
+		switch (event.key.key)
+		{
+		// Movimiento
+		case SDLK_DOWN: dirY = 1; break;
+		case SDLK_UP: dirY = -1; break;
+		// Armar el arco
+		case SDLK_LEFT: 
+			if (numArrows>0) strung = true; 
+			break;
+		// Disparar el arco
+		case SDLK_RIGHT:
+			if (strung && numArrows > 0) Shoot();
+			break;
+		default: break;
+		}
+	}
+	// Si se ha soltado una tecla
+	else if (event.type == SDL_EVENT_KEY_UP)
+	{
+		if (event.key.key == SDLK_DOWN && dirY == 1) dirY = 0;
+		else if (event.key.key == SDLK_UP && dirY == -1) dirY = 0;
+	}
+}
+bool Bow::update(float delta)
+{
+	// Movimiento segun el input
+	body.move(Vector2D<float>(0.0, dirY * delta * vel));
+	// Clamp del movimiento a los bordes de la pantalla
+	// Clamp superior
+	if (body.getTopLeftCorner().getY() < 0)
+	body = Rectangle(Point2D<float>(body.getTopLeftCorner().getX(), 0), body.getWidth(), body.getHeight());
+	// Clamp inferior
+	else if (body.getTopLeftCorner().getY()+body.getHeight() > game->WINDOW_HEIGHT)
+	body = Rectangle(Point2D<float>(body.getTopLeftCorner().getX(), game->WINDOW_HEIGHT - body.getHeight()), body.getWidth(), body.getHeight());
+	// No se destruye en ningun caso durante el juego
+	return true;
+}
+void Bow::render() const
+{
+	if (texture)
+	{
+		// Los parametros extra y el operador para las diferentes texturas
+		texture->renderFrame(body.to_sdl(),0,strung ? 0 : 1);
+	}
+}
+void Bow::Shoot()
+{
+	if (game)
+	{
+		// TopleftCorner - parte width del arco para que salga desde el medio 
+		game->AddObject(
+			new Arrow(game, Rectangle{ Point2D<float>{body.getTopLeftCorner() + Point2D<float>(0,body.getHeight() / 4)},Game::ARROW_WIDTH,Game::ARROW_HEIGHT })
+		);
+		// Desarma el arco
+		strung = false;
+		// Quita una flecha del total
+		--numArrows;
+	}
+}
+void Bow::Save(std::ostream& out) const
+{
+	out << "Bow ";
+	SceneObject::Save(out);
+	out << vel << " " << numArrows << " " << strung << " ";
+}
